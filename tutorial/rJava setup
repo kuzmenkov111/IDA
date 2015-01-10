@@ -1,0 +1,40 @@
+1. Set up java home and update configuration
+http://r.789695.n4.nabble.com/Can-t-get-R-to-recognize-Java-for-rJava-installation-td4553023.html
+
+[root@localhost /]# su -
+
+[root@localhost /]# export JAVA_HOME=/home/jaehyeon/jdk1.7.0_71
+[root@localhost /]# export PATH=$PATH:$JAVA_HOME/bin
+
+[root@localhost /]# export JAVA_HOME=/home/jaehyeon/jdk1.7.0_71/jre
+[root@localhost /]# export PATH=$PATH:$JAVA_HOME/bin
+
+[root@localhost /]# R CMD javareconf
+
+=========
+Java interpreter : /home/jaehyeon/jdk1.7.0_71/jre/bin/java
+Java version     : 1.7.0_71
+Java home path   : /home/jaehyeon/jdk1.7.0_71/jre
+Java compiler    : /home/jaehyeon/jdk1.7.0_71/jre/../bin/javac
+Java headers gen.: /home/jaehyeon/jdk1.7.0_71/jre/../bin/javah
+Java archive tool: /home/jaehyeon/jdk1.7.0_71/jre/../bin/jar
+=========
+
+> library(rJava)
+Error : .onLoad failed in loadNamespace() for 'rJava', details:
+  call: dyn.load(file, DLLpath = DLLpath, ...)
+  error: unable to load shared object '/home/jaehyeon/R/x86_64-redhat-linux-gnu-library/3.1/rJava/libs/rJava.so':
+  libjvm.so: cannot open shared object file: No such file or directory
+Error: package or namespace load failed for ‘rJava’
+
+http://stackoverflow.com/questions/13403268/error-while-loading-rjava
+
+[root@localhost /]# cd /etc/ld.so.conf.d/
+[root@localhost ld.so.conf.d]# vi java.conf
+
+/home/jaehyeon/jdk1.7.0_71/jre/lib/amd64
+/home/jaehyeon/jdk1.7.0_71/jre/lib/amd64/server
+
+
+[root@localhost ld.so.conf.d]# ldconfig
+
