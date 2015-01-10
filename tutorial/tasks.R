@@ -1,4 +1,23 @@
+# http://berndbischl.github.io/mlr/tutorial/html/task/index.html
+
 library(mlr)
+
+## function signature
+#makeClassifTask(id, data, target, weights = NULL, blocking = NULL,
+#                positive = NA_character_, fixup.data = "warn", check.data = TRUE)
+
+#makeClusterTask(id, data, weights = NULL, blocking = NULL,
+#                fixup.data = "warn", check.data = TRUE)
+
+#makeCostSensTask(id, data, costs, blocking = NULL, fixup.data = "warn",
+#                 check.data = TRUE)
+
+#makeRegrTask(id, data, target, weights = NULL, blocking = NULL,
+#             fixup.data = "warn", check.data = TRUE)
+
+#makeSurvTask(id, data, target, censoring = "rcens", weights = NULL,
+#             blocking = NULL, fixup.data = "warn", check.data = TRUE)
+
 
 ## cluster analysis
 data(mtcars, package="datasets")
