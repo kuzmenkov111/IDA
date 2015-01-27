@@ -5,6 +5,7 @@
 - [Evaluating Classifiers](http://cseweb.ucsd.edu/~elkan/250Bwinter2012/classifiereval.pdf)
 - [A survey of cross-validation procedures for model selection](http://www.di.ens.fr/willow/pdfs/2010_Arlot_Celisse_SS.pdf)
 - [Bias in error estimation when using cross-validation for model selection](http://www.ncbi.nlm.nih.gov/pmc/articles/PMC1397873/)
+- [How do I know which method of cross validation is best?](http://stats.stackexchange.com/questions/103459/how-do-i-know-which-method-of-cross-validation-is-best)
 
 #### Tuning
 - [Tuned Data Mining in R](http://www.gm.fh-koeln.de/~konen/Publikationen/Koch11b.pdf)
