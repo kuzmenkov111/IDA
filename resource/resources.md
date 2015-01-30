@@ -17,7 +17,8 @@
 #### OpenML
 - [OpenML Workshop](https://www.youtube.com/playlist?list=PLBZBIkixHEicUl5fE2BQwHTc0GjytF_tH)
 
-
+#### Course
+- [LISA short courses](http://www.lisa.stat.vt.edu/?q=short_courses) ([Lecture videos](http://vimeo.com/lisavt))
 
 
 
