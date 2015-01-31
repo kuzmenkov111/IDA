@@ -20,5 +20,6 @@
 #### Course
 - [LISA short courses](http://www.lisa.stat.vt.edu/?q=short_courses) ([Lecture videos](http://vimeo.com/lisavt))
 
-
+#### ROC Analysis
+- [An introduction to ROC analysis](https://ccrma.stanford.edu/workshops/mir2009/references/ROCintro.pdf)
 
