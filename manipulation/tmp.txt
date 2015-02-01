@@ -1,0 +1,3 @@
+While multiple of machine learning frameworks in the .NET ecosystem such as Accord.NET (http://accord-framework.net/intro.html) and numl(http://numl.net/) and
+
+Between C# and F#, F# seems to have more potential to be applied for machine learning. Like Scala, F# supports both object-oriented and functional programming and has REPL. Moreover it has comprehensive and evolving data analysis tools such as Deedle (http://bluemountaincapital.github.io/Deedle/), R Type Provider (http://bluemountaincapital.github.io/FSharpRProvider/) and F# Data (http://fsharp.github.io/FSharp.Data/). However, as 'Hadoop-related' projects are usually implemented on Linux, F# may be a bit limited in that area.
