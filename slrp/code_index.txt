@@ -1,0 +1,30 @@
+R Code For Various Problems:
+Chapter 1 (Statistical Learning as a Regression Problem):
+	chap_1_prob_1.R (the airquality dataset)
+	chap_1_prob_2.R (complexity of the fitting function)
+	chap_1_prob_3.R (overfitting the data)
+Chapter 2 (Regression Splines and Regression Smoothers):
+	chap_2_prob_1.R (smoothers with one predictor)
+	chap_2_prob_2.R (smoothers with two predictors)
+	chap_2_prob_3.R (smoothers with more than two predictor)
+	chap_2_prob_4.R (smoothers with a binary response variable)
+Chapter 3 (Classification and Regression Trees (CART)):
+	chap_3_prob_1.R (CART vs. linear models)
+	chap_3_prob_2.R (classification with CART)
+	chap_3_prob_3.R (regression with CART)
+Chapter 4 (Bagging):
+	chap_4_prob_1.R (linear regression, CART, and bagging)
+	chap_4_prob_2.R (the Freedman dataset)
+	chap_4_prob_3.R (predicting frogs)
+Chapter 5 (Random Forests):
+	chap_5_prob_1.R (nonlinear curve fitting with random forests)
+	chap_5_prob_2.R (various options of the randomForest code)
+	chap_5_prob_3.R (classifying diabetes with random forests)
+Chapter 6 (Boosting):
+	chap_6_prob_1.R (nonlinear curve fitting with gradient boosting)
+	chap_6_prob_2.R (gradient boosting on the Leinhardt dataset)
+Chapter 7 (Support Vector Machines):
+	chap_7_prob_1.R (SVMs vs. logistic regression)
+	chap_7_prob_2.R (SVMs on the Pima.tr dataset)
+
+http://waxworksmath.com/Authors/A_F/Berk/berk.html

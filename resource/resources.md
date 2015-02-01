@@ -27,3 +27,4 @@
 - [A Brief Tour of the Trees and Forests](http://statistical-research.com/a-brief-tour-of-the-trees-and-forests/)
 - [Classification and regression trees - overview](http://www.stat.wisc.edu/~loh/treeprogs/guide/wires11.pdf)
 - [Decision Trees](http://ocw.mit.edu/courses/sloan-school-of-management/15-097-prediction-machine-learning-and-statistics-spring-2012/lecture-notes/MIT15_097S12_lec08.pdf)
+- [Statistical Learning from a Regression Perspective](http://waxworksmath.com/Authors/A_F/Berk/berk.html)
