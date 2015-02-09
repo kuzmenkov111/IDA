@@ -1,0 +1,75 @@
+
+[here](https://gist.github.com/jaehyeon-kim/23bc73660e0e7b53a36f)
+
+---
+
+### Prior Probabilities and Costs
+
+#### Notation
+- *N* observations, *C* classes and *K* terminal nodes
+- Prior probability of being class *i*: $$\pi_{i}, \: i=1,2,...,C$$
+- Loss matrix of incorrectly classifying *i* as *j*: $$L \left(i,j \right)$$
+- True class for an observation *x*: $$\tau \left(x \right)$$
+- Class assigned to node *A* if it is a terminal node: $$\tau \left(A \right)$$
+- Number of observations of class *i*, node *A*, and *i* in *A*: $$N_{i}, \; N_{A}, \; and \; N_{iA}$$
+
+#### Relationships
+
+1. Probability of cases appearning in node *A* is
+
+$$
+P(A) = \sum\limits_{i=1}^C \pi_{i} P \left[x \in A | \tau \left(x \right)=i \right] \; \left(\approx \sum\limits_{i=1}^C \pi_{i} \frac{N_{iA}}{N_{i}} \right)
+$$
+
+- The equality holds due to [the law of total probability](http://en.wikipedia.org/wiki/Law_of_total_probability)
+
+2. Probability of class i given that a case is in node *A* is 
+
+$$
+p\left(i | A\right) \left(=P \left[\tau \left(x \right) =i | x \in A \right] \right)= \pi_{i} \frac{P \left[x \in A | \tau \left(x \right)=i \right]}{P \left[x \in A\right]} \; \left(\approx \pi_{i} \frac{\left(\frac{N_{iA}}{N_{i}} \right)}{\sum\limits_{i=1}^C \pi_{i} \frac{N_{iA}}{N_i} } \right)
+$$
+
+- The equality holds due to [Bayes' theorem](http://en.wikipedia.org/wiki/Bayes%27_theorem)
+
+3. Risk associated with node *A* is defined as
+
+$$
+R\left(A \right) \equiv \sum\limits_{i=1}^C p\left(i | A\right)L \left(i,\tau \left(A \right) \right)
+$$
+
+4. The risk of the entire tree *T* is
+
+$$
+R\left(T \right) = \sum\limits_{j=1}^K P\left(A_{j}\right)R\left(A_{j}\right)
+$$
+
+Then a tree can be built without taking costs into account by setting $$L\left(i,j\right)=1 \; for\; all\; i \neq j$$ and the prior probabilities ($$\pi_i$$) are taken to be the observed class proportions (i.e. $$p\left(i | A\right)= \frac{N_{iA}}{N_{A}}$$).
+
+If a practitioner aims to modify the setting, either the prior probabilities or loss matrix can be adjusted. For example, as $$\tilde{\pi_i}\tilde{L}\left(i,j\right)=\pi_i L\left(i,j\right)$$, when there are only two classes, the prior probabilities can be altered as following.
+
+$$
+\tilde{\pi}_{i}^* = \frac{\pi_{i}L_{i}^*}{\pi_{i}L_{i}^* + \pi_{j}L_{j}^*}
+$$
+
+Note that it is more easier to adjust with a loss matrix when there are more than two classes.
+
+---
+
+### Missing Data
+
+CART tries to find a predictor and a split (*s*) for which the following is as large as possible.
+
+$$
+\triangle I\left(s,A\right)= I\left(A\right) - p\left(A_{L}\right) I\left(A_{L}\right) - p\left(A_{R}\right) I\left(A_{R}\right)
+$$
+
+- Parent impurity: $$I\left(A\right)$$
+- Probabilities of falling in the left and right node: ($$p\left(A_{L}\right), \; p\left(A_{R}\right)$$)
+
+1. Splits are determined without missing values while the probabilities are re-estimated.
+2. Actual splits of the missing values are performed by **surrogate variables**
+
+Supposed there are $$x_{1}$$ to $$x_{10}$$ perdictors. $$x_{1}$$ happens to be split and it has missing values.
+
+
+
