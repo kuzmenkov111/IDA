@@ -2,41 +2,9 @@ source("src/mlUtils.R")
 set.seed(1)
 data = rnorm(100,0,1)
 fit = rnorm(100,1,1)
-probs = c(0.1,0.25,0.75)
+probs = c(0.9)
 
-actual = data
-fitted = fit
-probs = sort(probs)
-# update 0 and 1 if necessary
-if(probs[1]>0) probs = c(0,probs)
-if(probs[length(probs)]<1) probs = c(probs,1)
-quan = quantile(actual, probs, na.rm=TRUE)
-actualCnt = data.frame(probs=c(),count=c())
-for(i in 2:length(quan)) {
-  prob = paste0(probs[i]*100,"%")
-  if(i==2) {
-    cnt = length(actual[actual >= quan[i-1] & actual <= quan[i]])
-  } else {
-    cnt = length(actual[actual > quan[i-1] & actual <= quan[i]])
-  }
-  actualCnt = rbind(actualCnt,data.frame(prob,cnt))
-}    
-fittedCnt = data.frame(probs=c(),count=c())
-for(i in 2:length(quan)) {
-  prob = paste0(probs[i]*100,"%")
-  if(i==2) {
-    cnt = length(fitted[fitted >= quan[i-1] & fitted <= quan[i]])
-  } else {
-    cnt = length(fitted[fitted > quan[i-1] & fitted <= quan[i]])
-  }
-  fittedCnt = rbind(fittedCnt,data.frame(prob,cnt))
-}  
-
-table(actualCnt,fittedCnt)
-
-
-
-regCM = function(actual, fitted, probs, type="Pred") {
+getRegCM = function(actual, fitted, probs, type="Pred") {
   if(length(probs) < 1) {
     message("probs not set")
   } else if(class(probs[1]) != "numeric") {
@@ -44,40 +12,32 @@ regCM = function(actual, fitted, probs, type="Pred") {
   } else if(max(probs) > 1 | min(probs) < 0) {
     message("probs not in valid range")
   } else {    
-    probs = sort(probs)
-    # update 0 and 1 if necessary
-    if(probs[1]>0) probs = c(0,probs)
-    if(probs[length(probs)]<1) probs = c(probs,1)
-    # update counts in each interval
-    quan = quantile(actual, probs, na.rm=TRUE)
-    
-    actualCnt = data.frame(probs=c(),count=c())
-    for(i in 2:length(quan)) {
-      prob = paste0(probs[i]*100,"%")
-      if(i==2) {
-        cnt = length(actual[actual >= quan[i-1] & actual <= quan[i]])
-      } else {
-        cnt = length(actual[actual > quan[i-1] & actual <= quan[i]])
+    conv = function(data, probs) {
+      probsUp = sort(probs)
+      # update 0 and 1 if necessary
+      if(probsUp[1]>0) probsUp = c(0,probsUp)
+      if(probsUp[length(probsUp)]<1) probsUp = c(probsUp,1)
+      quans = quantile(actual, probsUp, na.rm=TRUE)      
+      dat = c()
+      for(i in 1:length(data)) {
+        for(j in 1:length(probsUp)) {
+          if(data[i] <= quans[j]) {
+            dat = c(dat,probsUp[j])
+            break
+          }
+        }
       }
-      actualCnt = rbind(actualCnt,data.frame(prob,cnt))
+      
+      datUp = dat
+      tmp1 = datUp[datUp <= probs[1]]
+      tmp1 = paste0("<=",probs[1]*100,"%")
+      tmp2 = datUp[datUp > probs[1]]
+      tmp2 = paste0(">",probs[1]*100,"%")
+      datUp = c(tmp1,tmp2)
+      
+      cbind(dat, datUp)
     }    
-    fittedCnt = data.frame(probs=c(),count=c())
-    for(i in 2:length(quan)) {
-      prob = paste0(probs[i]*100,"%")
-      if(i==2) {
-        cnt = length(fitted[fitted >= quan[i-1] & fitted <= quan[i]])
-      } else {
-        cnt = length(fitted[fitted > quan[i-1] & fitted <= quan[i]])
-      }
-      fittedCnt = rbind(fittedCnt,data.frame(prob,cnt))
-    }    
-    #cm = table(actualCnt,fittedCnt)  
+    actualConv = conv(actual, probs)
   }
-  #cm
+  actualConv
 }
-
-
-
-
-
-
