@@ -66,7 +66,7 @@ getRegCM = function(actual, fitted, probs, type="Pred", ...) {
   if(length(actual[is.na(actual)]) + length(fitted[is.na(fitted)]) > 0) {
     message("Currently NA values are not supported")
   } else {
-    probs = sort(probs)  
+    probs = sort(round(probs,2))  
     conv = function(data,ref,probs) {
       outs = c()
       if(length(probs) == 1) {
@@ -89,3 +89,9 @@ getRegCM = function(actual, fitted, probs, type="Pred", ...) {
     getUpdatedCM(table(conv(actual,actual,probs),conv(fitted,actual,probs)))    
   }
 }
+
+set.seed(1)
+actual = rnorm(100,0,1)
+fitted = rnorm(100,1,5)
+probs = c(0.3456)
+getRegCM(actual,fitted,probs)
