@@ -4,6 +4,8 @@ data = rnorm(20,0,1)
 fit = rnorm(20,1,1)
 probs = c(0.5)
 
+getRegCM = function()
+
 probs = sort(probs)
 probsUp = probs
 if(probsUp[1]>0) probsUp = c(0,probsUp)
@@ -21,8 +23,8 @@ for(i in 1:length(data)) {
 }
 
 conv = function(ins, probs) {
-  if(length(probs)==1) {
-    outs = c()
+  outs = c()
+  if(length(probs)==1) {    
     tmp = ins[ins<=probs[1]]
     tmp[tmp<=probs[1]] = probs[1]
     tmp = paste0(tmp*100,"%-")
@@ -37,6 +39,12 @@ conv = function(ins, probs) {
   }
   outs
 }
+
+conv(data,probs)
+
+
+
+
 
 outs = c()
 tmp = ins[ins<=probs[1]]

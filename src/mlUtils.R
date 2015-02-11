@@ -35,7 +35,7 @@ getUpdatedCM = function(cm, type="Pred") {
       cmUp = rbind(cm,as.table(useError(cm)))
       # model error added to the last column
       cmUp = cbind(cmUp,as.matrix(modelError(cm)))
-      rownames(cmUp) = c(paste("Actual",rownames(cm),sep=": "),"Use Error")
+      rownames(cmUp) = c(paste("actual",rownames(cm),sep=": "),"Use Error")
       colnames(cmUp) = c(paste(type,colnames(cm),sep=": "),"Model Error")  
       round(cmUp,2)
     }
@@ -45,5 +45,47 @@ getUpdatedCM = function(cm, type="Pred") {
   }
   else {
     message("Enter an object of the 'table' class")
+  }
+}
+
+#
+# getRegCM produces a confusion matrix for a continuous response  
+# where quantile values of actual data split both actual and fitted response
+#
+# Usage
+# set.seed(1)
+# actual = rnorm(100,0,1)
+# fitted = rnorm(100,1,5)
+# probs = c(0.2)
+# getRegCM(actual,fitted,probs)
+#
+# last modified on Feb 11, 2015
+#
+
+getRegCM = function(actual, fitted, probs, type="Pred", ...) {
+  if(length(actual[is.na(actual)]) + length(fitted[is.na(fitted)]) > 0) {
+    message("Currently NA values are not supported")
+  } else {
+    probs = sort(probs)  
+    conv = function(data,ref,probs) {
+      outs = c()
+      if(length(probs) == 1) {
+        lower = length(data[data<=quantile(ref,probs[1])])
+        upper = length(data[data>quantile(ref,probs[1])])
+        outs = c(outs,rep(paste0(probs[1]*100,"%-"),lower)
+                 ,rep(paste0(probs[1]*100,"%+"),upper))
+      } else {
+        lower = length(data[data<=quantile(ref,probs[1])])
+        outs = c(outs,rep(paste0(probs[1]*100,"%-"),lower))
+        for(i in 2:length(probs)) {
+          lower = length(data[data<=quantile(ref,probs[i])]) - length(data[data<quantile(ref,probs[i-1])])
+          outs = c(outs,rep(paste0(probs[i]*100,"%-"),lower))
+        }
+        upper = length(data[data>quantile(ref,probs[length(probs)])])
+        outs = c(outs,rep(paste0(probs[length(probs)]*100,"%+"),upper))
+      }
+      outs
+    }
+    getUpdatedCM(table(conv(actual,actual,probs),conv(fitted,actual,probs)))    
   }
 }
