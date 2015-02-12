@@ -55,17 +55,35 @@ set.seed(12357)
 mod.reg.custom = rpart(Sales ~ ., data=trainData.reg, control=rpart.control(cp=0))
 mod.reg.custom$cptable
 
-df = mod.reg.custom$cptable
-ind = function(name, df) { grep(name, colnames(df)) }
-cpInd = ind("CP",df)
-xerrInd = ind("xerror", df)
-xstdInd = ind("xstd", df)
 
-bestInd = 0
-for(i in 2:nrow(df)) {
-  print(paste(df[i-1,xerrInd]-df[i,xerrInd],df[i-1,xstdInd],sep="---"))
-}
-bestInd
+data = as.data.frame(mod.reg.custom$cptable)
+cp = "CP"
+err = "xerror"
+std = "xstd"
+
+#bestCP = function(data,cp,err,std,decreasing=TRUE,...) {
+  data = as.data.frame(data)
+  data[with(data,order(cp,decreasing=TRUE)),]
+  # get index of each column
+  ind = function(name, df) { grep(name, colnames(df)) }
+  cpInd = ind(cp,df)
+  errInd = ind(err, df)
+  stdInd = ind(std, df)  
+  # create subset to apply 1-SE rule
+  df = cbind(df[2:nrow(data),cpInd],abs(diff(df[,errInd])),df[1:nrow(data)-1,stdInd])
+  subDF = subset(df,df[,2]>df[,3])
+  # if found, get the last row, otherwise take the first column
+  if(nrow(subDF)>0) {
+    subDF = subDF[nrow(subDF),]
+  } else {
+    subDF = data.frame(data[1,cpInd],data[1,errInd],data[1,stdInd])
+  }
+  colnames(subDF) <- c(cp,err,std)
+  subDF
+#}
+
+df = as.data.frame(mod.reg.custom$cptable)
+bestCP(df,"CP","xerror","xstd")
 
 # http://stackoverflow.com/questions/26828901/warning-message-missing-values-in-resampled-performance-measures-in-caret-tra
 # http://stackoverflow.com/questions/10503784/caret-error-when-using-anything-but-loocv-with-rpart
