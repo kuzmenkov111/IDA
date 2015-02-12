@@ -1,14 +1,14 @@
 #
-# getUpdatedCM aims to extend a confusion matrix 
+# updateCM aims to extend a confusion matrix 
 # by adding model errors to the last column and use errors to the last row.
 #
 # Usage
-# getUpdatedCM(cm)
+# updateCM(cm)
 #
-# last modified on Feb 8, 2015
+# last modified on Feb 13, 2015
 #
 
-getUpdatedCM = function(cm, type="Pred") {
+updateCM = function(cm, type="Pred") {
   if(class(cm)=="table") {
     if(nrow(cm) > 0 & length(dim(cm)) > 1) {
       # row wise misclassification
@@ -49,7 +49,7 @@ getUpdatedCM = function(cm, type="Pred") {
 }
 
 #
-# getRegCM produces a confusion matrix for a continuous response  
+# regCM produces a confusion matrix for a continuous response  
 # where quantile values of actual data split both actual and fitted response
 #
 # Usage
@@ -57,12 +57,12 @@ getUpdatedCM = function(cm, type="Pred") {
 # actual = rnorm(100,0,1)
 # fitted = rnorm(100,1,5)
 # probs = c(0.2)
-# getRegCM(actual,fitted,probs)
+# regCM(actual,fitted,probs)
 #
-# last modified on Feb 11, 2015
+# last modified on Feb 13, 2015
 #
 
-getRegCM = function(actual, fitted, probs, type="Pred", ...) {
+regCM = function(actual, fitted, probs, type="Pred", ...) {
   if(length(actual[is.na(actual)]) + length(fitted[is.na(fitted)]) > 0) {
     message("Currently NA values are not supported")
   } else {
@@ -86,12 +86,54 @@ getRegCM = function(actual, fitted, probs, type="Pred", ...) {
       }
       outs
     }
-    getUpdatedCM(table(conv(actual,actual,probs),conv(fitted,actual,probs)))    
+    updateCM(table(conv(actual,actual,probs),conv(fitted,actual,probs)))    
   }
 }
 
-set.seed(1)
-actual = rnorm(100,0,1)
-fitted = rnorm(100,1,5)
-probs = c(0.3456)
-getRegCM(actual,fitted,probs)
+#
+# regCM produces a confusion matrix for a continuous response  
+# where quantile values of actual data split both actual and fitted response
+#
+# Usage
+# set.seed(1)
+# actual = rnorm(100,0,1)
+# fitted = rnorm(100,1,5)
+# probs = c(0.2)
+# regCM(actual,fitted,probs)
+#
+# last modified on Feb 13, 2015
+#
+
+bestCP = function(data,cp,err,std,decreasing=TRUE,...) {
+  # get index of each column
+  ind = function(name, df) { grep(name, colnames(df)) }
+  cpInd = ind(cp,df)
+  errInd = ind(err, df)
+  stdInd = ind(std, df)
+  # reorder if necessary
+  data = as.data.frame(data)
+  data = data[order(data[,cpInd],decreasing=decreasing),]
+  # create subset to apply 1-SE rule - cp, xerror, xstd if rpart
+  df = data.frame(cp=data[2:nrow(data),cpInd])
+  df$err = abs(diff(data[,errInd]))
+  df$std = data[1:(nrow(data)-1),stdInd]
+  #df = cbind(data[2:nrow(data),cpInd],abs(diff(data[,errInd])),data[1:(nrow(data)-1),stdInd])
+  #colnames(df) <- c(cp,err,std)
+  # take if diff(xerror) > xstd
+  subDF = subset(df,df[,2]>df[,3])
+  # if found, get the last row, otherwise take the first column
+  if(nrow(subDF)>0) {
+    subDF = df[nrow(subDF),]
+  } else {
+    subDF = data.frame(data[1,cpInd],data[1,errInd],data[1,stdInd])
+    colnames(subDF) <- c(cp,err,std)
+  }  
+  subDF[1]
+}
+
+mod = rpart(Sales ~ ., data=Carseats, control=rpart.control(cp=0))
+data = mod$cptable
+bestCP(mod$cptable,"CP","xerror","xstd")
+
+cbind(data[2:nrow(data),1],abs(diff(data[,4])),data[1:(nrow(data)-1),5])
+nrow(data)
