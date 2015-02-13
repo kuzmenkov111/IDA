@@ -97,28 +97,30 @@ regCM = function(actual, fitted, probs, type="Pred", ...) {
 # Usage
 # require(ISLR)
 # require(rpart)
-# set.seed(1)
+# set.seed(125)
 # mod = rpart(Sales ~ ., data=Carseats, control=rpart.control(cp=0))
 # bestParam(mod$cptable,"CP","xerror","xstd")
 #
 # result:
-# CP     nsplit  rel error     xerror       xstd 
-# 0.01402704 9.00000000 0.42781645 0.59360492 0.03907472
+# 33          lowest        best
+# param  0.001670353 0.006052595
+# error  0.526206669 0.558780263
+# errStd 0.034780855 0.036463656
 #
 # last modified on Feb 14, 2015
 #
 
-bestParam = function(data,param,error,errStd,isDesc=TRUE,...) {
+bestParam = function(data,param,error,errStd,isDesc=TRUE, ...) {
   # convert name to index
   ind = function(name, df) { grep(name, colnames(df)) }
   param = ind(param, data)
   error = ind(error, data)
   errStd = ind(errStd, data)
-  # get min error  
+  # search min error
   from = ifelse(isDesc,1,nrow(data))
   to = ifelse(isDesc,nrow(data),1)
   by = ifelse(isDesc,1,-1)
-  pick = c(to,data[from,error],data[from,errStd])
+  pick = c(from,data[from,error],data[from,errStd])
   for(i in seq(from,to,by)) {
     if(data[i,error]<=pick[2]) pick=c(data[i,param],data[i,error],data[i,errStd])
   }
@@ -127,6 +129,5 @@ bestParam = function(data,param,error,errStd,isDesc=TRUE,...) {
   best = data[data[,error]<=pick[2]+pick[3],]
   best = if(isDesc) best[1,c(param,error,errStd)] else best[nrow(best),c(param,error,errStd)]
   out[,2] = data.frame(best=best)
-  
   out
 }
