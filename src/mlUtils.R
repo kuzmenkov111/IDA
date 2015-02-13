@@ -108,21 +108,25 @@ regCM = function(actual, fitted, probs, type="Pred", ...) {
 # last modified on Feb 14, 2015
 #
 
-bestParam = function(data,measure,error,errStd,isDesc=TRUE,...) {
+bestParam = function(data,param,error,errStd,isDesc=TRUE,...) {
   # convert name to index
-  ind = function(name, df) { grep(name, colnames(data)) }
-  measure = ind(measure,df)
-  error = ind(error, df)
-  errStd = ind(errStd, df)
-  # get min error
-  pick = c(1,data[1,error],data[1,errStd])
+  ind = function(name, df) { grep(name, colnames(df)) }
+  param = ind(param, data)
+  error = ind(error, data)
+  errStd = ind(errStd, data)
+  # get min error  
   from = ifelse(isDesc,1,nrow(data))
   to = ifelse(isDesc,nrow(data),1)
   by = ifelse(isDesc,1,-1)
+  pick = c(to,data[from,error],data[from,errStd])
   for(i in seq(from,to,by)) {
-    if(data[i,error]<=pick[2]) pick=c(i,data[i,error],data[i,errStd])
+    if(data[i,error]<=pick[2]) pick=c(data[i,param],data[i,error],data[i,errStd])
   }
+  out = data.frame(lowest=pick,row.names=c("param","error","errStd"))
   # select best param
-  df = data[data[,error]<=pick[2]+pick[3],]
-  if(isDesc) df[1,] else df[nrow(df),]
+  best = data[data[,error]<=pick[2]+pick[3],]
+  best = if(isDesc) best[1,c(param,error,errStd)] else best[nrow(best),c(param,error,errStd)]
+  out[,2] = data.frame(best=best)
+  
+  out
 }
