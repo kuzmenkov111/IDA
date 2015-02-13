@@ -91,49 +91,38 @@ regCM = function(actual, fitted, probs, type="Pred", ...) {
 }
 
 #
-# regCM produces a confusion matrix for a continuous response  
-# where quantile values of actual data split both actual and fitted response
+# bestParam select best single tunning parameter given measure, error and std of error
+# 1 standard error is applied and only 'cptable' of rpart() is tested.
 #
 # Usage
+# require(ISLR)
+# require(rpart)
 # set.seed(1)
-# actual = rnorm(100,0,1)
-# fitted = rnorm(100,1,5)
-# probs = c(0.2)
-# regCM(actual,fitted,probs)
+# mod = rpart(Sales ~ ., data=Carseats, control=rpart.control(cp=0))
+# bestParam(mod$cptable,"CP","xerror","xstd")
 #
-# last modified on Feb 13, 2015
+# result:
+# CP     nsplit  rel error     xerror       xstd 
+# 0.01402704 9.00000000 0.42781645 0.59360492 0.03907472
+#
+# last modified on Feb 14, 2015
 #
 
-bestCP = function(data,cp,err,std,decreasing=TRUE,...) {
-  # get index of each column
-  ind = function(name, df) { grep(name, colnames(df)) }
-  cpInd = ind(cp,df)
-  errInd = ind(err, df)
-  stdInd = ind(std, df)
-  # reorder if necessary
-  data = as.data.frame(data)
-  data = data[order(data[,cpInd],decreasing=decreasing),]
-  # create subset to apply 1-SE rule - cp, xerror, xstd if rpart
-  df = data.frame(cp=data[2:nrow(data),cpInd])
-  df$err = abs(diff(data[,errInd]))
-  df$std = data[1:(nrow(data)-1),stdInd]
-  #df = cbind(data[2:nrow(data),cpInd],abs(diff(data[,errInd])),data[1:(nrow(data)-1),stdInd])
-  #colnames(df) <- c(cp,err,std)
-  # take if diff(xerror) > xstd
-  subDF = subset(df,df[,2]>df[,3])
-  # if found, get the last row, otherwise take the first column
-  if(nrow(subDF)>0) {
-    subDF = df[nrow(subDF),]
-  } else {
-    subDF = data.frame(data[1,cpInd],data[1,errInd],data[1,stdInd])
-    colnames(subDF) <- c(cp,err,std)
-  }  
-  subDF[1]
+bestParam = function(data,measure,error,errStd,isDesc=TRUE,...) {
+  # convert name to index
+  ind = function(name, df) { grep(name, colnames(data)) }
+  measure = ind(measure,df)
+  error = ind(error, df)
+  errStd = ind(errStd, df)
+  # get min error
+  pick = c(1,data[1,error],data[1,errStd])
+  from = ifelse(isDesc,1,nrow(data))
+  to = ifelse(isDesc,nrow(data),1)
+  by = ifelse(isDesc,1,-1)
+  for(i in seq(from,to,by)) {
+    if(data[i,error]<=pick[2]) pick=c(i,data[i,error],data[i,errStd])
+  }
+  # select best param
+  df = data[data[,error]<=pick[2]+pick[3],]
+  if(isDesc) df[1,] else df[nrow(df),]
 }
-
-mod = rpart(Sales ~ ., data=Carseats, control=rpart.control(cp=0))
-data = mod$cptable
-bestCP(mod$cptable,"CP","xerror","xstd")
-
-cbind(data[2:nrow(data),1],abs(diff(data[,4])),data[1:(nrow(data)-1),5])
-nrow(data)
