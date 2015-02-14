@@ -1,4 +1,5 @@
 library(dplyr)
+library(ggplot2)
 library(rpart)
 library(rpart.plot)
 library(caret)
@@ -6,18 +7,19 @@ library(caret)
 ## data
 require(ISLR)
 data(Carseats)
-# label order changed from previous articles (No=1)
+# label order changed (No=1)
 Carseats = Carseats %>% 
   mutate(High=factor(ifelse(Sales<=8,"No","High"),labels=c("No","High")))
 # structure of predictors
 str(subset(Carseats,select=c(-High,-Sales)))
-# classification response summary
+# response summaries
 res.cl.summary = with(Carseats,rbind(table(High),table(High)/length(High)))
+res.cl.summary
+
 res.reg.summary = summary(Carseats$Sales)
+res.reg.summary
 
-eqProb = with(Carseats,length(Sales[Sales<=8])/length(Sales))
-
-# split data
+## split data
 set.seed(1237)
 trainIndex = createDataPartition(Carseats$High, p=.8, list=FALSE, times=1)
 # classification
@@ -34,116 +36,147 @@ test.res.cl.summary = with(testData.cl,rbind(table(High),table(High)/length(High
 train.res.reg.summary = summary(trainData.reg$Sales)
 test.res.reg.summary = summary(testData.reg$Sales)
 
-## fit model
+## train model
 # set up train control
 trControl = trainControl(method="repeatedcv",number=10,repeats=5)
 
-# train classification model
+# classification
 set.seed(12357)
 mod.cl = train(High ~ .
                     ,data=trainData.cl
                     ,method="rpart"
                     ,tuneLength=20
                     ,trControl=trControl)
+
+# regression - caret
+source("src/mlUtils.R")
+# caret
 set.seed(12357)
-mod.reg = train(Sales ~ .
+mod.reg.caret = train(Sales ~ .
                 ,data=trainData.reg
                 ,method="rpart"
                 ,tuneLength=20
                 ,trControl=trControl)
-set.seed(12357)
-mod.reg.custom = rpart(Sales ~ ., data=trainData.reg, control=rpart.control(cp=0))
-mod.reg.custom$cptable
-
-bestCP = function(data,cp,err,std,decreasing=TRUE,...) {
-  # get index of each column
-  ind = function(name, df) { grep(name, colnames(df)) }
-  cpInd = ind(cp,df)
-  errInd = ind(err, df)
-  stdInd = ind(std, df)
-  # reorder if necessary
-  data = as.data.frame(data)
-  data = data[order(data[,cpInd],decreasing=decreasing),]
-  # create subset to apply 1-SE rule - cp, xerror, xstd if rpart
-  df = cbind(df[2:nrow(data),cpInd],abs(diff(df[,errInd])),df[1:nrow(data)-1,stdInd])
-  colnames(df) <- c(cp,err,std)
-  # take if diff(xerror) > xstd
-  subDF = subset(df,df[,2]>df[,3])
-  # if found, get the last row, otherwise take the first column
-  if(nrow(subDF)>0) {
-    subDF = df[nrow(subDF),]
-  } else {
-    subDF = data.frame(data[1,cpInd],data[1,errInd],data[1,stdInd])
-    colnames(subDF) <- c(cp,err,std)
-  }  
-  subDF[1]
-}
-
+# R squared meaningless
+# Warning message:
+#   In nominalTrainWorkflow(x = x, y = y, wts = weights, info = trainInfo,  :
+#     There were missing values in resampled performance measures.
 # http://stackoverflow.com/questions/26828901/warning-message-missing-values-in-resampled-performance-measures-in-caret-tra
 # http://stackoverflow.com/questions/10503784/caret-error-when-using-anything-but-loocv-with-rpart
-# select results at best tuned cp
+
+# regression - rpart
+set.seed(12357)
+mod.reg.rpart = rpart(Sales ~ ., data=trainData.reg, control=rpart.control(cp=0))
+mod.reg.rpart.param = bestParam(mod.reg.rpart$cptable,"CP","xerror","xstd")
+mod.reg.rpart.param
+
+mod.reg.caret.param = bestParam(mod.reg.caret$results,"cp","RMSE","RMSESD",isDesc=FALSE)
+mod.reg.caret.param
+
+# plot best CP
+df = as.data.frame(mod.reg.rpart$cptable)
+best = bestParam(mod.reg.rpart$cptable,"CP","xerror","xstd")
+ubound = ifelse(best[2,1]+best[3,1]>max(df$xerror),max(df$xerror),best[2,1]+best[3,1])
+lbound = ifelse(best[2,1]-best[3,1]<min(df$xerror),min(df$xerror),best[2,1]-best[3,1])
+
+ggplot(data=df[3:nrow(df),], aes(x=CP,y=xerror)) + 
+  geom_line() + geom_point() + 
+  geom_abline(intercept=ubound,slope=0, color="blue") + 
+  geom_abline(intercept=lbound,slope=0, color="blue") + 
+  geom_point(aes(x=best[1,2],y=best[2,2]),color="red",size=3)
+
+## show best tuned cp
+# classification
 subset(mod.cl$results,subset=cp==mod.cl$bestTune$cp)
-subset(mod.reg$results,subset=cp==mod.reg$bestTune$cp)
 
-# refit the model to the entire training data
-cp = mod.eq.cost$bestTune$cp
-mod.eq.cost = rpart(High ~ ., data=trainData, control=rpart.control(cp=cp))
+# regression - caret
+subset(mod.reg.caret$results,subset=cp==mod.reg.caret$bestTune$cp)
 
-# generate confusion matrix on training data
-source("src/mlUtils.R")
-fit.eq.cost = predict(mod.eq.cost, type="class")
-fit.cm.eq.cost = table(data.frame(actual=trainData$High,response=fit.eq.cost))
-fit.cm.eq.cost = getUpdatedCM(fit.cm.eq.cost)
-fit.cm.eq.cost
+# regression - rpart
+mod.reg.rpart.summary = data.frame(t(mod.reg.rpart.param[,2]))
+colnames(mod.reg.rpart.summary) = c("CP","xerror","xstd")
+mod.reg.rpart.summary
 
-pred.eq.cost = predict(mod.eq.cost, newdata=testData, type="class")
-pred.cm.eq.cost = table(data.frame(actual=testData$High,response=pred.eq.cost))
-pred.cm.eq.cost = getUpdatedCM(pred.cm.eq.cost)
-pred.cm.eq.cost
+## refit the model to the entire training data
+# classification
+cp.cl = mod.cl$bestTune$cp
+mod.cl = rpart(High ~ ., data=trainData.cl, control=rpart.control(cp=cp.cl))
 
-## fit model with unequal cost
-# update prior probabilities
-# assuming that incorrectly classifying 'High' has 3 times costly
-costs = c(2,1)
-train.res.summary
-prior.w.weight = c(train.res.summary[2,1] * costs[1]
-                   ,train.res.summary[2,2] * costs[2])
-priorUp = c(prior.w.weight[1]/sum(prior.w.weight)
-            ,prior.w.weight[2]/sum(prior.w.weight))
-priorUp
+# regression - caret
+cp.reg.caret = mod.reg.caret$bestTune$cp
+mod.reg.caret = rpart(Sales ~ ., data=trainData.reg, control=rpart.control(cp=cp.reg.caret))
 
-# loss matrix
-loss.mat = matrix(c(0,2,1,0),nrow=2,byrow=TRUE)
-loss.mat
+# regression - rpart
+cp.reg.rpart = mod.reg.rpart.param[1,2]
+mod.reg.rpart = rpart(Sales ~ ., data=trainData.reg, control=rpart.control(cp=cp.reg.rpart))
 
-# refit the model with the updated priors
-# fit with updated prior
-mod.uq.cost = rpart(High ~ ., data=trainData, parms=list(prior=priorUp), control=rpart.control(cp=cp))
-# fit with loss matrix
-# mod.uq.cost = rpart(High ~ ., data=trainData, parms=list(loss=loss.mat), control=rpart.control(cp=cp))
+## generate confusion matrix on training data
+# fit models
+fit.cl = predict(mod.cl, type="class")
+fit.reg.caret = predict(mod.reg.caret)
+fit.reg.rpart = predict(mod.reg.rpart)
 
-# generate confusion matrix on training data
-fit.uq.cost = predict(mod.uq.cost, type="class")
-fit.cm.uq.cost = table(data.frame(actual=trainData$High,response=fit.uq.cost))
-fit.cm.uq.cost = getUpdatedCM(fit.cm.uq.cost)
-fit.cm.uq.cost
+# classification
+# percentile that Sales is divided by No and High
+eqPercentile = with(trainData.reg,length(Sales[Sales<=8])/length(Sales))
+eqPercentile
 
-pred.uq.cost = predict(mod.uq.cost, newdata=testData, type="class")
-pred.cm.uq.cost = table(data.frame(actual=testData$High,response=pred.uq.cost))
-pred.cm.uq.cost = getUpdatedCM(pred.cm.uq.cost)
-pred.cm.uq.cost
+# classification
+fit.cl.cm = table(data.frame(actual=trainData.cl$High,response=fit.cl))
+fit.cl.cm = updateCM(fit.cl.cm,type="Fitted")
+fit.cl.cm
 
+# regression with equal percentile is not comparable
+probs = eqPercentile
+fit.reg.caret.cm = regCM(trainData.reg$Sales, fit.reg.caret, probs=probs, type="Fitted")
+fit.reg.caret.cm
 
+# regression with selected percentiles
+probs = seq(0.2,0.8,0.2)
 
+# regression - caret
+# caret produces a better outcome on training data - note lower cp
+fit.reg.caret.cm = regCM(trainData.reg$Sales, fit.reg.caret, probs=probs, type="Fitted")
+fit.reg.caret.cm
 
+# regression - rpart
+fit.reg.rpart.cm = regCM(trainData.reg$Sales, fit.reg.rpart, probs=probs, type="Fitted")
+fit.reg.rpart.cm
 
+## generate confusion matrix on test data
+# fit models
+pred.reg.caret = predict(mod.reg.caret, newdata=testData.reg)
+pred.reg.rpart = predict(mod.reg.rpart, newdata=testData.reg)
 
+# regression - caret
+pred.reg.caret.cm = regCM(testData.reg$Sales, pred.reg.caret, probs=probs)
+pred.reg.caret.cm
 
+# regression - rpart
+pred.reg.rpart.cm = regCM(testData.reg$Sales, pred.reg.rpart, probs=probs)
+pred.reg.rpart.cm
 
+# model by caret with lower cp produces better outcome
+# 1 standard error rule is questionable on this data
+pred.reg.caret.rmse = sqrt(sum(testData.reg$Sales-pred.reg.caret)^2/length(testData.reg$Sales))
+pred.reg.caret.rmse
 
+pred.reg.rpart.rmse = sqrt(sum(testData.reg$Sales-pred.reg.rpart)^2/length(testData.reg$Sales))
+pred.reg.rpart.rmse
 
+## plot actual vs prediced and resid vs fitted
+predDF = data.frame(actual=testData.reg$Sales
+                    ,predicted=pred.reg.caret
+                    ,resid=resid(rpart(Sales ~ ., data=testData.reg, control=rpart.control(cp=cp.reg.caret))))
+# correlation
+cor(predDF)
 
+# actual vs predicted
+ggplot(predDF, aes(x=predicted,y=actual)) + 
+  geom_point(shape=1,position=position_jitter(width=0.1,height=0.1)) + 
+  geom_smooth(method=lm,se=FALSE)
 
-
-
-
+# resid vs predicted
+ggplot(predDF, aes(x=predicted,y=resid)) + 
+  geom_point(shape=1,position=position_jitter(width=0.1,height=0.1)) + 
+  geom_smooth(method=lm,se=FALSE)
