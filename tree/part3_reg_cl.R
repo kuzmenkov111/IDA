@@ -43,20 +43,20 @@ trControl = trainControl(method="repeatedcv",number=10,repeats=5)
 # classification
 set.seed(12357)
 mod.cl = train(High ~ .
-                    ,data=trainData.cl
-                    ,method="rpart"
-                    ,tuneLength=20
-                    ,trControl=trControl)
+               ,data=trainData.cl
+               ,method="rpart"
+               ,tuneLength=20
+               ,trControl=trControl)
 
 # regression - caret
 source("src/mlUtils.R")
 # caret
 set.seed(12357)
 mod.reg.caret = train(Sales ~ .
-                ,data=trainData.reg
-                ,method="rpart"
-                ,tuneLength=20
-                ,trControl=trControl)
+                      ,data=trainData.reg
+                      ,method="rpart"
+                      ,tuneLength=20
+                      ,trControl=trControl)
 # R squared meaningless
 # Warning message:
 #   In nominalTrainWorkflow(x = x, y = y, wts = weights, info = trainInfo,  :
@@ -165,9 +165,10 @@ pred.reg.rpart.rmse = sqrt(sum(testData.reg$Sales-pred.reg.rpart)^2/length(testD
 pred.reg.rpart.rmse
 
 ## plot actual vs prediced and resid vs fitted
+mod.reg.rpart.test = rpart(Sales ~ ., data=testData.reg, control=rpart.control(cp=cp.reg.caret))
 predDF = data.frame(actual=testData.reg$Sales
                     ,predicted=pred.reg.caret
-                    ,resid=resid(rpart(Sales ~ ., data=testData.reg, control=rpart.control(cp=cp.reg.caret))))
+                    ,resid=resid(mod.reg.rpart.test))
 # correlation
 cor(predDF)
 
@@ -180,3 +181,23 @@ ggplot(predDF, aes(x=predicted,y=actual)) +
 ggplot(predDF, aes(x=predicted,y=resid)) + 
   geom_point(shape=1,position=position_jitter(width=0.1,height=0.1)) + 
   geom_smooth(method=lm,se=FALSE)
+
+# plot tree
+cols <- ifelse(mod.reg.rpart.test$frame$yval > 8,"green4","darkred") # green if high
+prp(mod.reg.rpart.test
+    ,main="CART Model Tree"
+    #,extra=106           # display prob of survival and percent of obs
+    ,nn=TRUE             # display the node numbers
+    ,fallen.leaves=TRUE  # put the leaves on the bottom of the page
+    ,branch=.5           # change angle of branch lines
+    ,faclen=0            # do not abbreviate factor levels
+    ,trace=1             # print the automatically calculated cex
+    ,shadow.col="gray"   # shadows under the leaves
+    ,branch.lty=3        # draw branches using dotted lines
+    ,split.cex=1.0       # make the split text same to the node text
+    ,split.prefix="is "  # put "is " before split text
+    ,split.suffix="?"    # put "?" after split text
+    ,col=cols, border.col=cols   # green if survived
+    ,split.box.col="lightgray"   # lightgray split boxes (default is white)
+    ,split.border.col="darkgray" # darkgray border on split boxes
+    ,split.round=.5)
