@@ -72,18 +72,28 @@ x = 1
 class(x) = c("Foo","Bar")
 fun(x)
 
+##
+set.seed(123457)
+ranFun = function() {
+  sapply(rep(1,10),rnorm)  
+}
+ranFun()
 
+#### construct a class with a function
+employee = function(name) {
+  if(length(name) != 1 && !is.character(name))
+    stop("single string value of name necessary")
 
+  result = list(name = name)
+  class(result) = "employee"
+  result
+}
 
+manager = function(name, members) {
+  result = employee(name)
 
-
-
-
-
-
-
-
-
-
-
+  if(length(breastfeeding) != 1 && !is.logical(breastfeeding))
+    stop("single logical value of true or false necessary")
+  
+}
 
