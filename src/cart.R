@@ -1,4 +1,21 @@
-## create modRPART class
+#
+# 3 constructor functions are included and they create S3 objects of the CART model
+# by the rpart, caret and mlr packages - the last two extends the first. They are 
+#
+# - cartRPART()
+# - cartCARET()
+# - cartMLR()
+#
+# Both classification and regression are supported. Together with the relevant packages,
+# some utility functions should be sourced and the source can be found in the following link.
+# https://gist.github.com/jaehyeon-kim/5622ae9fa982e0b46550
+# 
+# Their usage can be found in
+# link 1
+# link 2
+#
+# last modified on Feb 21, 2015
+#
 cartRPART = function(trainData, testData=NULL, formula, ...) {
   if(class(trainData) != "data.frame" & ifelse(is.null(testData),TRUE,class(testData)=="data.frame"))
     stop("data frames should be entered for train and test (if any) data")  
@@ -53,7 +70,7 @@ cartRPART = function(trainData, testData=NULL, formula, ...) {
     test.perf.se = ls()
   }    
   # update results
-  result = list(mod=mod,cp=cp,cm=cm.up
+  result = list(mod=mod,cp=cp
                 ,train.lst=train.perf.lst,train.se=train.perf.se
                 ,test.lst=test.perf.lst,test.se=test.perf.se)
   # add class name
@@ -150,7 +167,7 @@ cartCARET = function(trainData, testData=NULL, formula
     test.perf.lst = ls()
   }    
   # update results
-  result = list(rpt=rpt,mod=mod,cp=cp,cm=cm.up
+  result = list(rpt=rpt,mod=mod,cp=cp
                 ,train.lst=train.perf.lst,test.lst=test.perf.lst)
   # add class name
   class(result) = c("rpartExtCrt","rpartExt")
@@ -159,7 +176,7 @@ cartCARET = function(trainData, testData=NULL, formula
 
 ## create modCARET class
 cartMLR = function(trainData, testData=NULL, formula
-                     ,fitInd=FALSE, tuneLen=20, method="RepCV", nDiv=10, nRep=5) {
+                   ,fitInd=FALSE, tuneLen=20, method="RepCV", nDiv=10, nRep=5) {
   if(class(trainData) != "data.frame" & ifelse(is.null(testData),TRUE,class(testData)=="data.frame"))
     stop("data frames should be entered for train and test (if any) data")
   # extract response name and index
@@ -203,7 +220,7 @@ cartMLR = function(trainData, testData=NULL, formula
     tsk = makeRegrTask(data=trainData,target=res.name)
     lrn = makeLearner("regr.rpart",par.vals=list(cp=0))
   }
-
+  
   # tune parameter
   cpGrid = function(index) {
     start=0
@@ -253,7 +270,7 @@ cartMLR = function(trainData, testData=NULL, formula
     test.perf.lst = ls()
   }    
   # update results
-  result = list(rpt=rpt,task=tsk,learner=lrn,mod=mod,cp=cp,cm=cm.up
+  result = list(rpt=rpt,task=tsk,learner=lrn,mod=mod,cp=cp
                 ,train.lst=train.perf.lst,test.lst=test.perf.lst)
   # add class name
   class(result) = c("rpartExtMlr","rpartExt")
