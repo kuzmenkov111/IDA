@@ -193,7 +193,7 @@ cartMLR = function(trainData, testData=NULL, formula
   if("rpart" %in% rownames(installed.packages()) == FALSE)
     stop("rpart package is not installed")
   if("mlr" %in% rownames(installed.packages()) == FALSE)
-    stop("mlr package is not installed")  
+    stop("mlr package is not installed")
   
   # fit by rpart package if necessary
   if(fitInd) {
