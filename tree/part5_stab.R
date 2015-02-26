@@ -19,7 +19,85 @@ testData.cl = data.cl[-trainIndex,]
 trainData.rg = data.rg[trainIndex,]
 testData.rg = data.rg[-trainIndex,]
 
-## classification
+trn = trainData.cl
+tst = testData.cl
+formula = "High ~ ."
+ntree = 2
+
+source("src/mlUtils.R")
+require(rpart)
+require(mlr)
+res.name = gsub(" ","",unlist(strsplit(formula,split="~"))[[1]])
+res.ind = match(res.name, colnames(trn))
+# may need to skip a certain boostrap sample, don't create whole samples
+cnt = 0
+if(ntree < 2)
+  stop("ntree should be at least 1")
+
+while(cnt < ntree) {
+  # some tests(eg, values of a factor are not the same)
+  useSample = FALSE
+  if(TRUE) {
+    useSample=TRUE
+    boot.cp = list()
+    varImp.lst = list()
+    varImp.se = list()
+  }  
+  # only if tests passed
+  if(useSample) {
+    cnt = cnt + 1
+    # create resample description and task
+    if(class(trn[,res.ind]) != "factor") {
+      boot.desc = makeResampleDesc(method="Bootstrap", stratify=FALSE, iters=1)
+      boot.task = makeRegrTask(data=trn,target=res.name)
+    } else {
+      boot.desc = makeResampleDesc(method="Bootstrap", stratify=TRUE, iters=1)
+      boot.task = makeClassifTask(data=trn,target=res.name)
+    }
+    # create bootstrap instance
+    boot.ins = makeResampleInstance(desc=boot.desc, task=boot.task) 
+    # split train data in-bag and out-of-bag
+    trn.in = trn[boot.ins$train.inds[[1]],]
+    trn.out = trn[boot.ins$test.inds[[1]],]
+    # fit model on bootstrap sample
+    mod = rpart(formula=formula, data=trn.in, control=rpart.control(cp=0))
+    cp = unlist(bestParam(boot.mod$cptable,"CP","xerror","xstd")[1,1:2])
+    boot.cp[[length(boot.cp)+1]] = cp
+    # prune with cp values at least xerror and 1-SE rule
+    prune.lst = prune(boot.mod, cp=cp[1])
+    varImp.lst[[length(varImp.lst)+1]] = prune.lst$variable.importance
+    prune.se = prune(boot.mod, cp=cp[2])
+    varImp.se[[length(varImp.se)+1]] = prune.se$variable.importance
+  }
+}
+
+
+
+
+bag = function(trn, tst = NULL, formula, ntree=1, ...) {
+  require(rpart)
+  require(mlr)
+  res.name = gsub(" ","",unlist(strsplit(formula,split="~"))[[1]])
+  res.ind = match(res.name, colnames(trn))
+  # may need to skip a certain boostrap sample
+  cnt = 0
+  while(cnt < ntree) {
+    if(class(trn[,res.ind]) != "factor") {
+      boot.desc = makeResampleDesc(method="Bootstrap", stratify=FALSE, iters=1)
+      boot.task = makeRegrTask(data=trn,target=res.name)
+    } else {
+      boot.desc = makeResampleDesc(method="Bootstrap", stratify=TRUE, iters=1)
+      boot.task = makeClassifTask(data=trn,target=res.name)
+    }
+    boot.ins = makeResampleInstance(desc=boot.desc, task=boot.task)    
+    cnt = cnt + 1
+  }  
+}
+
+ntree = 2
+
+
+# classification
 cartRPART = function(trainData, testData=NULL, formula, ...) {
   if(class(trainData) != "data.frame" & ifelse(is.null(testData),TRUE,class(testData)=="data.frame"))
     stop("data frames should be entered for train and test (if any) data")  
@@ -83,92 +161,3 @@ cartRPART = function(trainData, testData=NULL, formula, ...) {
   class(result) = "rpartExt"
   return(result)
 }
-
-cartDT = function(trainData, testData=NULL, formula, fitInd=FALSE, iters=10, ...) {
-  if(class(trainData) != "data.frame" & ifelse(is.null(testData),TRUE,class(testData)=="data.frame"))
-    stop("data frames should be entered for train and test (if any) data")
-  # extract response name and index
-  res.name = gsub(" ","",unlist(strsplit(formula,split="~"))[[1]])
-  res.ind = match(res.name, colnames(trainData))
-  if(res.name %in% colnames(trainData) == FALSE)
-    stop("response is not found in train data")
-  if(class(trainData[,res.ind]) != "factor") {
-    if(class(trainData[,res.ind]) != "numeric") {
-      stop("response should be either numeric or factor")
-    }
-  } 
-  if("rpart" %in% rownames(installed.packages()) == FALSE)
-    stop("rpart package is not installed")
-  if("mlr" %in% rownames(installed.packages()) == FALSE)
-    stop("mlr package is not installed")
-  
-  # fit by rpart package if necessary
-  if(fitInd) {
-    if(!is.null(ls()[ls()=="cartRPART"])) {
-      rpt = cartRPART(trainData,testData,formula=formula)
-    } else {
-      message("cartRPART is not found")
-      message("data is not fit by rpart")
-      rpt = ls()
-    }
-  } else {
-    message("data is not fit by rpart")
-    rpt = ls()
-  }
-  # create bootstrap samples
-  require(mlr)
-  resample.desc = makeResampleDesc(method="Bootstrap",iters=iters)
-  resample.Inds = makeResampleInstance(desc=resample.desc
-                                       ,task=makeClassifTask(data=trainData,target=res.name))
-}
-
-res.name="High"
-
-require(mlr)
-set.seed(127)
-resample.desc = makeResampleDesc(method="Bootstrap",iters=2)
-resample.Inds = makeResampleInstance(desc=resample.desc
-                                     ,task=makeClassifTask(data=trainData.cl,target="High"))
-
-
-rpt.cl = cartRPART(trainData.cl,testData.cl,formula="High ~ .")
-
-set.seed(12357)
-for(i in 1:length(resample.Inds)) {
-  inb = trainData.cl[resample.Inds[[i]],]
-  oob = trainData.cl[-resample.Inds[[i]],]
-  tst = testData.cl
-  rpt.cl = cartRPART(trainData.cl,testData.cl,formula="High ~ .")  
-}
-
-
-tmpDF = trainData.cl
-man = as.factor(c(rep("Medium",300),rep("Good",21)))
-tmpDF$ShelveLoc = man
-
-rpart(formula="High ~ .", data=tmpDF, control=rpart.control(cp=0))
-
-
-# variable importance
-# oob error
-# test error
-
-head(trainData.cl[,sapply(trainData.cl, class)=="factor"])
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-set.seed(12357)
-rpt.rg = cartRPART(trainData.rg,testData.rg,formula="Sales ~ .")
