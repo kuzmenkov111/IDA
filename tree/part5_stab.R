@@ -30,13 +30,25 @@ require(mlr)
 res.name = gsub(" ","",unlist(strsplit(formula,split="~"))[[1]])
 res.ind = match(res.name, colnames(trn))
 
-boot.cp = list()
-varImp.lst = list()
-varImp.se = list()
-fit.oob.lst = list()
-fit.oob.se = list()
-fit.test.lst = list()
-fit.test.se = list()
+boot.cp = list() # cp values at least xerror (lst) and by 1-SE rule (se)
+varImp.lst = list() # variable importance at lst
+varImp.se = list() # variable importance by se
+res.oob = list() # oob response values
+fit.oob.lst = list() # fitted oob response values at lst
+fit.oob.se = list() # fited oob response values by se
+fit.tst = list() # test response values
+fit.tst.lst = list() # fitted test response values at lst
+fit.tst.se = list() # fitted test response values by se
+# index of data to merge each sample's outcome
+mge.oob = data.frame(ind=as.numeric(rownames(trn))) # oob response
+mge.oob.lst = mge.oob # oob fitted at lst
+mge.oob.se = mge.oob # oob fitted by 1-SE
+if(!is.null(tst)) {
+  mge.tst = list() # tst actual
+  mge.tst.lst = mge.tst # tst fitted at lst
+  mge.tst.se = mge.tst # tst fitted at se
+}
+
 cnt = 0
 while(cnt < ntree) {  
   # create resample description and task
@@ -47,11 +59,10 @@ while(cnt < ntree) {
     boot.desc = makeResampleDesc(method="Bootstrap", stratify=TRUE, iters=1)
     boot.task = makeClassifTask(data=trn,target=res.name)
   }
-  # create bootstrap instance
+  # create bootstrap instance and split data - in-bag and out-of-bag
   boot.ins = makeResampleInstance(desc=boot.desc, task=boot.task) 
-  # split train data in-bag and out-of-bag
   trn.in = trn[boot.ins$train.inds[[1]],]
-  trn.out = trn[boot.ins$test.inds[[1]],]
+  trn.oob = trn[boot.ins$test.inds[[1]],]
   # fit model on bootstrap sample
   mod = rpart(formula=formula, data=trn.in, control=rpart.control(cp=0))
   cp = tryCatch({
@@ -63,6 +74,8 @@ while(cnt < ntree) {
     }
   )  
   if(sum(cp) != 0) {
+    cnt = cnt + 1
+    # update cp
     boot.cp[[length(boot.cp)+1]] = cp
     # update important variables with cps at least xerror and 1-SE rule
     prune.lst = prune(mod, cp=cp[1])
@@ -70,48 +83,51 @@ while(cnt < ntree) {
     prune.se = prune(mod, cp=cp[2])
     varImp.se[[length(varImp.se)+1]] = prune.se$variable.importance
     # update OOB
-    fitData = function(model, data, response, params) {
+    fitData = function(model, data, response, count) {
       ind = match(response, colnames(data))
       type = ifelse(class(data[,ind])=="factor","class","vector")
-      fit = predict(model, newdata=data, type=type)      
+      fit = predict(model, newdata=data, type=type)
+      fitDF = data.frame(as.numeric(names(fit)),fit,row.names=NULL)
+      colnames(fitDF) = c("ind",paste("s",count,sep="."))
+      fitDF
     }
-    # update oob predictions
-    fit.oob.lst[[length(fit.oob.lst)+1]] = fitData(prune.lst, trn.out, res.name, cp[1]) 
-    fit.oob.se[[length(fit.oob.se)+1]] = fitData(prune.se, trn.out, res.name, cp[2])
-    # update test predictions if exists
+    # update oob fitted and response values    
+    fit.oob.lst[[length(fit.oob.lst)+1]] = fitData(prune.lst, trn.oob, res.name, cnt)
+    fit.oob.se[[length(fit.oob.se)+1]] = fitData(prune.se, trn.oob, res.name, cnt)
+    res.oob[[length(res.oob)+1]] = data.frame(as.numeric(rownames(trn.oob))
+                                              ,trn.oob[, match(res.name, colnames(trn.oob))],row.names=NULL)
+    colnames(res.oob[[length(res.oob)]])=c("ind",paste("s",cnt,sep="."))
+    # merge oob fitted and response values
+    mge.oob.lst = merge(mge.oob.lst,fit.oob.lst[[length(fit.oob.lst)]],by="ind",all=TRUE)
+    mge.oob.se = merge(mge.oob.se,fit.oob.se[[length(fit.oob.se)]],by="ind",all=TRUE)
+    mge.oob = merge(mge.oob,res.oob[[length(res.oob)]],by="ind",all=TRUE)
+    # update test fitted and response values
     if(!is.null(tst)) {
-      fit.test.lst[[length(fit.test.lst)+1]] = fitData(prune.lst, tst, res.name, cp[1])
-      fit.test.se[[length(fit.test.se)+1]] = fitData(prune.se, tst, res.name, cp[2])
-    }    
-    cnt = cnt + 1
+      colName = paste("s",cnt,sep=".")
+      fit.tst[[length(fit.tst)+1]] = data.frame(tst[, match(res.name, colnames(trn.oob))],row.names=NULL)
+      colnames(fit.tst[[length(fit.tst)]])=colName
+      fit.tst.lst[[length(fit.tst.lst)+1]] = as.data.frame(fitData(prune.lst, tst, res.name, cnt)[,2])
+      colnames(fit.tst.lst[[length(fit.tst.lst)]])=colName
+      fit.tst.se[[length(fit.tst.se)+1]] = as.data.frame(fitData(prune.se, tst, res.name, cnt)[,2])
+      colnames(fit.tst.se[[length(fit.tst.se)]])=colName
+    }
   }
 }
 
+if(length(fit.tst) > 0) mge.tst = do.call(cbind, fit.tst)
+if(length(fit.tst.lst) > 0) mge.tst.lst = do.call(cbind, fit.tst.lst)
+if(length(fit.tst.se) > 0) mge.tst.se = do.call(cbind, fit.tst.se)
 
 
 
-bag = function(trn, tst = NULL, formula, ntree=1, ...) {
-  require(rpart)
-  require(mlr)
-  res.name = gsub(" ","",unlist(strsplit(formula,split="~"))[[1]])
-  res.ind = match(res.name, colnames(trn))
-  # may need to skip a certain boostrap sample
-  cnt = 0
-  while(cnt < ntree) {
-    if(class(trn[,res.ind]) != "factor") {
-      boot.desc = makeResampleDesc(method="Bootstrap", stratify=FALSE, iters=1)
-      boot.task = makeRegrTask(data=trn,target=res.name)
-    } else {
-      boot.desc = makeResampleDesc(method="Bootstrap", stratify=TRUE, iters=1)
-      boot.task = makeClassifTask(data=trn,target=res.name)
-    }
-    boot.ins = makeResampleInstance(desc=boot.desc, task=boot.task)    
-    cnt = cnt + 1
-  }  
-}
 
-ntree = 2
 
+do.call(cbind,fit.test.lst)
+merge(tt,z,by="row.names",all.x=TRUE)[,-(5:8)]
+cbind(t, z[, "symbol"][match(rownames(t), rownames(z))])
+
+rowInd = rownames(trn)
+names(fit.oob.lst[[2]])
 
 # classification
 cartRPART = function(trainData, testData=NULL, formula, ...) {
