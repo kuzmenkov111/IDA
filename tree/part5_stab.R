@@ -29,45 +29,61 @@ require(rpart)
 require(mlr)
 res.name = gsub(" ","",unlist(strsplit(formula,split="~"))[[1]])
 res.ind = match(res.name, colnames(trn))
-# may need to skip a certain boostrap sample, don't create whole samples
-cnt = 0
-if(ntree < 2)
-  stop("ntree should be at least 1")
 
-while(cnt < ntree) {
-  # some tests(eg, values of a factor are not the same)
-  useSample = FALSE
-  if(TRUE) {
-    useSample=TRUE
-    boot.cp = list()
-    varImp.lst = list()
-    varImp.se = list()
-  }  
-  # only if tests passed
-  if(useSample) {
-    cnt = cnt + 1
-    # create resample description and task
-    if(class(trn[,res.ind]) != "factor") {
-      boot.desc = makeResampleDesc(method="Bootstrap", stratify=FALSE, iters=1)
-      boot.task = makeRegrTask(data=trn,target=res.name)
-    } else {
-      boot.desc = makeResampleDesc(method="Bootstrap", stratify=TRUE, iters=1)
-      boot.task = makeClassifTask(data=trn,target=res.name)
+boot.cp = list()
+varImp.lst = list()
+varImp.se = list()
+fit.oob.lst = list()
+fit.oob.se = list()
+fit.test.lst = list()
+fit.test.se = list()
+cnt = 0
+while(cnt < ntree) {  
+  # create resample description and task
+  if(class(trn[,res.ind]) != "factor") {
+    boot.desc = makeResampleDesc(method="Bootstrap", stratify=FALSE, iters=1)
+    boot.task = makeRegrTask(data=trn,target=res.name)
+  } else {
+    boot.desc = makeResampleDesc(method="Bootstrap", stratify=TRUE, iters=1)
+    boot.task = makeClassifTask(data=trn,target=res.name)
+  }
+  # create bootstrap instance
+  boot.ins = makeResampleInstance(desc=boot.desc, task=boot.task) 
+  # split train data in-bag and out-of-bag
+  trn.in = trn[boot.ins$train.inds[[1]],]
+  trn.out = trn[boot.ins$test.inds[[1]],]
+  # fit model on bootstrap sample
+  mod = rpart(formula=formula, data=trn.in, control=rpart.control(cp=0))
+  cp = tryCatch({
+    unlist(bestParam(mod$cptable,"CP","xerror","xstd")[1,1:2])
+  },
+    error=function(cond) { 
+      message("cp fails to be generated. This sample is not taken.")
+      cp = c(0,0)
     }
-    # create bootstrap instance
-    boot.ins = makeResampleInstance(desc=boot.desc, task=boot.task) 
-    # split train data in-bag and out-of-bag
-    trn.in = trn[boot.ins$train.inds[[1]],]
-    trn.out = trn[boot.ins$test.inds[[1]],]
-    # fit model on bootstrap sample
-    mod = rpart(formula=formula, data=trn.in, control=rpart.control(cp=0))
-    cp = unlist(bestParam(boot.mod$cptable,"CP","xerror","xstd")[1,1:2])
+  )  
+  if(sum(cp) != 0) {
     boot.cp[[length(boot.cp)+1]] = cp
-    # prune with cp values at least xerror and 1-SE rule
-    prune.lst = prune(boot.mod, cp=cp[1])
+    # update important variables with cps at least xerror and 1-SE rule
+    prune.lst = prune(mod, cp=cp[1])
     varImp.lst[[length(varImp.lst)+1]] = prune.lst$variable.importance
-    prune.se = prune(boot.mod, cp=cp[2])
+    prune.se = prune(mod, cp=cp[2])
     varImp.se[[length(varImp.se)+1]] = prune.se$variable.importance
+    # update OOB
+    fitData = function(model, data, response, params) {
+      ind = match(response, colnames(data))
+      type = ifelse(class(data[,ind])=="factor","class","vector")
+      fit = predict(model, newdata=data, type=type)      
+    }
+    # update oob predictions
+    fit.oob.lst[[length(fit.oob.lst)+1]] = fitData(prune.lst, trn.out, res.name, cp[1]) 
+    fit.oob.se[[length(fit.oob.se)+1]] = fitData(prune.se, trn.out, res.name, cp[2])
+    # update test predictions if exists
+    if(!is.null(tst)) {
+      fit.test.lst[[length(fit.test.lst)+1]] = fitData(prune.lst, tst, res.name, cp[1])
+      fit.test.se[[length(fit.test.se)+1]] = fitData(prune.se, tst, res.name, cp[2])
+    }    
+    cnt = cnt + 1
   }
 }
 
