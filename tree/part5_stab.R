@@ -30,23 +30,17 @@ require(mlr)
 res.name = gsub(" ","",unlist(strsplit(formula,split="~"))[[1]])
 res.ind = match(res.name, colnames(trn))
 
-boot.cp = list() # cp values at least xerror (lst) and by 1-SE rule (se)
-varImp.lst = list() # variable importance at lst
-varImp.se = list() # variable importance by se
-res.oob = list() # oob response values
-fit.oob.lst = list() # fitted oob response values at lst
-fit.oob.se = list() # fited oob response values by se
-fit.tst = list() # test response values
-fit.tst.lst = list() # fitted test response values at lst
-fit.tst.se = list() # fitted test response values by se
-# index of data to merge each sample's outcome
-mge.oob = data.frame(ind=as.numeric(rownames(trn))) # oob response
-mge.oob.lst = mge.oob # oob fitted at lst
-mge.oob.se = mge.oob # oob fitted by 1-SE
+mge.boot.cp = data.frame(measure=c("lowest","best")) # cp values at least xerror (lst) and by 1-SE rule (se)
+mge.varImp.lst = data.frame(var=colnames(trn[,-res.ind])) # merged variable importance at lst
+mge.varImp.se = mge.varImp.lst # merged variable importance by se
+mge.oob = data.frame(ind=as.numeric(rownames(trn))) # merged oob response
+mge.oob.lst = mge.oob # merged oob fitted at lst
+mge.oob.se = mge.oob # merged oob fitted by 1-SE
 if(!is.null(tst)) {
-  mge.tst = list() # tst actual
-  mge.tst.lst = mge.tst # tst fitted at lst
-  mge.tst.se = mge.tst # tst fitted at se
+  # output will be mge.tst, mge.tst.lst, mge.tst.se constructed by do.call at the end
+  fit.tst = list()
+  fit.tst.lst = fit.tst
+  fit.tst.se = fit.tst
 }
 
 cnt = 0
@@ -76,12 +70,19 @@ while(cnt < ntree) {
   if(sum(cp) != 0) {
     cnt = cnt + 1
     # update cp
-    boot.cp[[length(boot.cp)+1]] = cp
+    boot.cp = data.frame(names(cp),cp)
+    colnames(boot.cp) = c("measure",paste("s",cnt,sep="."))
+    mge.boot.cp = merge(mge.boot.cp,boot.cp,by="measure",all=TRUE)
     # update important variables with cps at least xerror and 1-SE rule
     prune.lst = prune(mod, cp=cp[1])
-    varImp.lst[[length(varImp.lst)+1]] = prune.lst$variable.importance
     prune.se = prune(mod, cp=cp[2])
-    varImp.se[[length(varImp.se)+1]] = prune.se$variable.importance
+    # merge variable importance
+    varImp.lst = data.frame(names(prune.lst$variable.importance),prune.lst$variable.importance)
+    colnames(varImp.lst) = c("var",paste("s",cnt,sep="."))
+    mge.varImp.lst = merge(mge.varImp.lst,varImp.lst,by="var",all=TRUE)
+    varImp.se = data.frame(names(prune.se$variable.importance),prune.se$variable.importance)
+    colnames(varImp.se) = colnames(varImp.lst)
+    mge.varImp.se = merge(mge.varImp.se, varImp.se, by="var",all=TRUE)
     # update OOB
     fitData = function(model, data, response, count) {
       ind = match(response, colnames(data))
@@ -92,15 +93,15 @@ while(cnt < ntree) {
       fitDF
     }
     # update oob fitted and response values    
-    fit.oob.lst[[length(fit.oob.lst)+1]] = fitData(prune.lst, trn.oob, res.name, cnt)
-    fit.oob.se[[length(fit.oob.se)+1]] = fitData(prune.se, trn.oob, res.name, cnt)
-    res.oob[[length(res.oob)+1]] = data.frame(as.numeric(rownames(trn.oob))
-                                              ,trn.oob[, match(res.name, colnames(trn.oob))],row.names=NULL)
-    colnames(res.oob[[length(res.oob)]])=c("ind",paste("s",cnt,sep="."))
+    fit.oob.lst = fitData(prune.lst, trn.oob, res.name, cnt)
+    fit.oob.se = fitData(prune.se, trn.oob, res.name, cnt)
+    res.oob = data.frame(as.numeric(rownames(trn.oob))
+                         ,trn.oob[, match(res.name, colnames(trn.oob))],row.names=NULL)
+    colnames(res.oob)=c("ind",paste("s",cnt,sep="."))
     # merge oob fitted and response values
-    mge.oob.lst = merge(mge.oob.lst,fit.oob.lst[[length(fit.oob.lst)]],by="ind",all=TRUE)
-    mge.oob.se = merge(mge.oob.se,fit.oob.se[[length(fit.oob.se)]],by="ind",all=TRUE)
-    mge.oob = merge(mge.oob,res.oob[[length(res.oob)]],by="ind",all=TRUE)
+    mge.oob.lst = merge(mge.oob.lst,fit.oob.lst,by="ind",all=TRUE)
+    mge.oob.se = merge(mge.oob.se,fit.oob.se,by="ind",all=TRUE)
+    mge.oob = merge(mge.oob,res.oob,by="ind",all=TRUE)
     # update test fitted and response values
     if(!is.null(tst)) {
       colName = paste("s",cnt,sep=".")
@@ -114,6 +115,11 @@ while(cnt < ntree) {
   }
 }
 
+# remove index column at col 1
+if(ncol(mge.oob.lst) > 0) mge.oob.lst = mge.oob.lst[,-1]
+if(ncol(mge.oob.se) > 0) mge.oob.se = mge.oob.se[,-1]
+if(ncol(mge.oob) > 0) mge.oob = mge.oob[,-1]
+# bind tst preformance
 if(length(fit.tst) > 0) mge.tst = do.call(cbind, fit.tst)
 if(length(fit.tst.lst) > 0) mge.tst.lst = do.call(cbind, fit.tst.lst)
 if(length(fit.tst.se) > 0) mge.tst.se = do.call(cbind, fit.tst.se)
