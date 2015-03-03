@@ -19,7 +19,7 @@ testData.cl = data.cl[-trainIndex,]
 
 ## run rpartDT
 set.seed(12357)
-cl = cartDT(trainData.cl, testData.cl, "High ~ .", ntree=1000)
+cl = cartDT(trainData.cl, testData.cl, "High ~ .", ntree=500)
 
 ## cp values
 # cart
@@ -77,7 +77,7 @@ cart.varImp = data.frame(method="cart"
                          ,value=cl$rpt$mod$variable.importance/sum(cl$rpt$mod$variable.importance)
                          ,row.names=NULL)
 # bagging
-ntree = 1000
+ntree = length(cl$cum.varImp.lst)
 bgg.varImp = data.frame(method="bagging"
                         ,variable=rownames(cl$cum.varImp.lst)
                         ,value=cl$cum.varImp.lst[,ntree])

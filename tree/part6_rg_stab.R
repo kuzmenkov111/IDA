@@ -76,7 +76,7 @@ cart.varImp = data.frame(method="cart"
                          ,value=rg$rpt$mod$variable.importance/sum(rg$rpt$mod$variable.importance)
                          ,row.names=NULL)
 # bagging - lst to se to see 1-SE rule
-ntree = 1000
+ntree = length(rg$cum.varImp.lst)
 bgg.varImp = data.frame(method="bagging"
                         ,variable=rownames(rg$cum.varImp.lst)
                         ,value=rg$cum.varImp.lst[,ntree])
