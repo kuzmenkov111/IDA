@@ -1,0 +1,1 @@
+weathercl <- weatherc[,-5]

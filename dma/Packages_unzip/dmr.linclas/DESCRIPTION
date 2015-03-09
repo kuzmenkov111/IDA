@@ -1,0 +1,20 @@
+Package: dmr.linclas
+Type: Package
+Title: A package with example functions from the book Cichosz, P.
+        (2015): Data Mining Algorithms: Explained Using R
+Version: 1.0
+Date: 2014-06-30
+Author: Pawel Cichosz <p.cichosz@elka.pw.edu.pl>
+Maintainer: Pawel Cichosz <p.cichosz@elka.pw.edu.pl>
+Description: A package with example functions from Chapter 5 of the book Cichosz, P. (2015): Data Mining Algorithms: Explained Using R. See Appendix B or http://www.wiley.com/go/data_mining_algorithms for more details.
+License: GPL (>= 2)
+Depends: dmr.util, dmr.trans, dmr.linreg
+Suggests: dmr.data, dmr.claseval, lattice
+Collate: parametric-classification-data.R linear-classification-data.R
+        parametric-classification-threshold.R
+        parametric-classification-logit-plot.R
+        parametric-classification-logit.R
+        parametric-classification-estimation.R
+        linear-classification-linear-subset.R
+        linear-classification-ols.R linear-classification-discrete.R
+Packaged: 2014-10-22 06:49:40 UTC; pcichosz

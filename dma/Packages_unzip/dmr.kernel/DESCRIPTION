@@ -1,0 +1,13 @@
+Package: dmr.kernel
+Type: Package
+Title: A package with example functions from the book Cichosz, P.
+        (2015): Data Mining Algorithms: Explained Using R
+Version: 1.0
+Date: 2014-06-30
+Author: Pawel Cichosz <p.cichosz@elka.pw.edu.pl>
+Maintainer: Pawel Cichosz <p.cichosz@elka.pw.edu.pl>
+Description: A package with example functions from Chapter 16 of the book Cichosz, P. (2015): Data Mining Algorithms: Explained Using R. See Appendix B or http://www.wiley.com/go/data_mining_algorithms for more details.
+License: GPL (>= 2)
+Imports: dmr.util, dmr.linclas, dmr.linreg, quadprog, kernlab, Matrix
+Suggests: dmr.claseval, dmr.regeval, lattice
+Packaged: 2014-10-22 06:49:33 UTC; pcichosz

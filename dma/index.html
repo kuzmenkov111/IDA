@@ -1,0 +1,667 @@
+<html>
+
+<head>
+<title>Data Mining Algoritms Explained Using R: Book Webpage Contents</title>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+</head>
+
+<body bgcolor="#BBBBBB">
+
+<center>
+<h1>Data Mining Algoritms Explained Using R: Book Webpage Contents</h1>
+</center>
+
+<h1></h1>
+<hr>
+<h1></h1>
+
+
+<h2>R Packages</h2>
+
+All the reusable R functions defined in this book's examples, as well
+as illustrative datasets and some simple utility functions not
+included in the book due to their lack of didactic value, are
+contained in a number of R packages. They all have the \texttt{dmr.}
+name prefix and are referred to as DMR packages in the book.  These
+can be downloaded using the links below and then installed from
+local files.
+
+<table>
+<tr>
+  <th>Package</th>
+  <th>Description</th>
+  <th>Chapter</th>
+</tr>
+<tr>
+  <td><a href="Packages/dmr.attrsel_1.0.tar.gz">dmr.attrsel</a></td>
+  <td>attribute selection filters and wrappers</td>
+  <td>19</td>
+</tr>
+<tr>
+  <td><a href="Packages/dmr.bayes_1.0.tar.gz">dmr.bayes</a></td>
+  <td>naive Bayes classifier</td>
+  <td>4</td>
+</tr>
+<tr>
+  <td><a href="Packages/dmr.claseval_1.0.tar.gz">dmr.claseval</a></td>
+  <td>classification performance measures, model evaluation procedures</td>
+  <td>7</td>
+</tr>
+<tr>
+  <td> <a href="Packages/dmr.cluseval_1.0.tar.gz">dmr.cluseval</a></td>
+  <td>clustering quality measures</td>
+  <td>14</td>
+</tr>
+<tr>
+  <td><a href="Packages/dmr.data_1.0.tar.gz">dmr.data</a></td>
+  <td>illustrative tiny datasets</td>
+  <td>1</td>
+</tr>
+<tr>
+  <td><a href="Packages/dmr.dectree_1.0.tar.gz">dmr.dectree</a></td>
+  <td>decision trees</td>
+  <td>3</td>
+</tr>
+<tr>
+  <td><a href="Packages/dmr.disc_1.0.tar.gz">dmr.disc</a></td>
+  <td>discretization</td>
+  <td>18</td>
+</tr>
+<tr>
+  <td><a href="Packages/dmr.dissim_1.0.tar.gz">dmr.dissim</a></td>
+  <td>dissimilarity and similarity measures</td>
+  <td>11</td>
+</tr>
+<tr>
+  <td><a href="Packages/dmr.ensemble_1.0.tar.gz">dmr.ensemble</a></td>
+  <td>model ensembles</td>
+  <td>15</td>
+</tr>
+<tr>
+  <td><a href="Packages/dmr.hierclus_1.0.tar.gz">dmr.hierclus</a></td>
+  <td>hierarchical clustering</td>
+  <td>13</td>
+</tr>
+<tr>
+  <td><a href="Packages/dmr.kcenters_1.0.tar.gz">dmr.kcenters</a></td>
+  <td>k-centers clustering</td>
+  <td>12</td>
+</tr>
+<tr>
+  <td><a href="Packages/dmr.kernel_1.0.tar.gz">dmr.kernel</a></td>
+  <td>support vector machines, support vector regression, kernel functions</td>
+  <td>16</td>
+</tr>
+<tr>
+  <td><a href="Packages/dmr.linclas_1.0.tar.gz">dmr.linclas</a></td>
+  <td>linear classification</td>
+  <td>5</td>
+</tr>
+<tr>
+  <td><a href="Packages/dmr.linreg_1.0.tar.gz">dmr.linreg</a></td>
+  <td>linear regression</td>
+  <td>8</td>
+</tr>
+<tr>
+  <td><a href="Packages/dmr.miscost_1.0.tar.gz">dmr.miscost</a></td>
+  <td>incorporating misclassification costs</td>
+  <td>6</td>
+</tr>
+<tr>
+  <td><a href="Packages/dmr.regeval_1.0.tar.gz">dmr.regeval</a></td>
+  <td>regression performance measures</td>
+  <td>10</td>
+</tr>
+<tr>
+  <td><a href="Packages/dmr.regtree_1.0.tar.gz">dmr.regtree</a><//td>
+  <td>regression trees</td>
+  <td>9</td>
+</tr>
+<tr>
+  <td><a href="Packages/dmr.rpartutil_1.0.tar.gz">dmr.rpartutil</a></td>
+  <td>utilities for using <code>rpart</code> decision and regression trees</td>
+  <td>20</td>
+</tr>
+<tr>
+  <td><a href="Packages/dmr.stats_1.0.tar.gz">dmr.stats</a></td>
+  <td>descriptive statistics and statistical relationship measures</td>
+  <td>2</td>
+</tr>
+<tr>
+  <td><a href="Packages/dmr.trans_1.0.tar.gz">dmr.trans</a></td>
+  <td>attribute transformations</td>
+  <td>17</td>
+</tr>
+<tr>
+  <td><a href="Packages/dmr.util_1.0.tar.gz">dmr.util</a></td>
+  <td>utility functions</td>
+  <td></td>
+</tr>
+</table>
+
+<h2>Example Code Snippets</h2>
+
+
+Each code snippet contained in the book is available for as an R
+source file. There are two categories of these code snippets:
+
+<ul>
+<li> <b>illustrative examples:</b> code snippets presented in
+examples, with a single source file for each example,
+<li> <b>case studies:</b> code snippets presented in Chapter 20, with
+a single source file for each section in that chapter.
+</ul>
+
+
+<h3>Code from Chapter 1</h3>
+
+<table>
+<tr> <th>Source file</th> <th>Section</th> <th>Example</th> </tr>
+<tr> <td><a href="Code/01/1-3-1.R">1-3-1.R</a></td> <td>1.3</td> <td>1.3.1</td> </tr>
+<tr> <td><a href="Code/01/1-3-2.R">1-3-2.R</a></td> <td>1.3</td> <td>1.3.2</td> </tr>
+<tr> <td><a href="Code/01/1-4-1.R">1-4-1.R</a></td> <td>1.4</td> <td>1.4.1</td> </tr>
+<tr> <td><a href="Code/01/1-5-1.R">1-5-1.R</a></td> <td>1.5</td> <td>1.5.1</td> </tr>
+</table>
+
+<h3>Code from Chapter 2</h3>
+
+<table>
+<tr> <th>Source file</th> <th>Section</th> <th>Example</th> </tr>
+<tr> <td><a href="Code/02/2-1-1.R">2-1-1.R</a></td> <td>2.1</td> <td>2.1.1</td> </tr>
+<tr> <td><a href="Code/02/2-4-1.R">2-4-1.R</a></td> <td>2.4</td> <td>2.4.1</td> </tr>
+<tr> <td><a href="Code/02/2-4-2.R">2-4-2.R</a></td> <td>2.4</td> <td>2.4.2</td> </tr>
+<tr> <td><a href="Code/02/2-4-3.R">2-4-3.R</a></td> <td>2.4</td> <td>2.4.3</td> </tr>
+<tr> <td><a href="Code/02/2-4-4.R">2-4-4.R</a></td> <td>2.4</td> <td>2.4.4</td> </tr>
+<tr> <td><a href="Code/02/2-4-5.R">2-4-5.R</a></td> <td>2.4</td> <td>2.4.5</td> </tr>
+<tr> <td><a href="Code/02/2-4-6.R">2-4-6.R</a></td> <td>2.4</td> <td>2.4.6</td> </tr>
+<tr> <td><a href="Code/02/2-4-7.R">2-4-7.R</a></td> <td>2.4</td> <td>2.4.7</td> </tr>
+<tr> <td><a href="Code/02/2-4-8.R">2-4-8.R</a></td> <td>2.4</td> <td>2.4.8</td> </tr>
+<tr> <td><a href="Code/02/2-4-9.R">2-4-9.R</a></td> <td>2.4</td> <td>2.4.9</td> </tr>
+<tr> <td><a href="Code/02/2-4-10.R">2-4-10.R</a></td> <td>2.4</td> <td>2.4.10</td> </tr>
+<tr> <td><a href="Code/02/2-4-11.R">2-4-11.R</a></td> <td>2.4</td> <td>2.4.11</td> </tr>
+<tr> <td><a href="Code/02/2-4-12.R">2-4-12.R</a></td> <td>2.4</td> <td>2.4.12</td> </tr>
+<tr> <td><a href="Code/02/2-4-13.R">2-4-13.R</a></td> <td>2.4</td> <td>2.4.13</td> </tr>
+<tr> <td><a href="Code/02/2-4-14.R">2-4-14.R</a></td> <td>2.4</td> <td>2.4.14</td> </tr>
+<tr> <td><a href="Code/02/2-4-15.R">2-4-15.R</a></td> <td>2.4</td> <td>2.4.15</td> </tr>
+<tr> <td><a href="Code/02/2-4-16.R">2-4-16.R</a></td> <td>2.4</td> <td>2.4.16</td> </tr>
+<tr> <td><a href="Code/02/2-4-17.R">2-4-17.R</a></td> <td>2.4</td> <td>2.4.17</td> </tr>
+<tr> <td><a href="Code/02/2-4-18.R">2-4-18.R</a></td> <td>2.4</td> <td>2.4.18</td> </tr>
+<tr> <td><a href="Code/02/2-4-19.R">2-4-19.R</a></td> <td>2.4</td> <td>2.4.19</td> </tr>
+<tr> <td><a href="Code/02/2-4-20.R">2-4-20.R</a></td> <td>2.4</td> <td>2.4.20</td> </tr>
+<tr> <td><a href="Code/02/2-4-21.R">2-4-21.R</a></td> <td>2.4</td> <td>2.4.21</td> </tr>
+<tr> <td><a href="Code/02/2-4-22.R">2-4-22.R</a></td> <td>2.4</td> <td>2.4.22</td> </tr>
+<tr> <td><a href="Code/02/2-4-23.R">2-4-23.R</a></td> <td>2.4</td> <td>2.4.23</td> </tr>
+<tr> <td><a href="Code/02/2-4-24.R">2-4-24.R</a></td> <td>2.4</td> <td>2.4.24</td> </tr>
+<tr> <td><a href="Code/02/2-4-25.R">2-4-25.R</a></td> <td>2.4</td> <td>2.4.25</td> </tr>
+<tr> <td><a href="Code/02/2-4-26.R">2-4-26.R</a></td> <td>2.4</td> <td>2.4.26</td> </tr>
+<tr> <td><a href="Code/02/2-4-27.R">2-4-27.R</a></td> <td>2.4</td> <td>2.4.27</td> </tr>
+<tr> <td><a href="Code/02/2-4-28.R">2-4-28.R</a></td> <td>2.4</td> <td>2.4.28</td> </tr>
+<tr> <td><a href="Code/02/2-4-29.R">2-4-29.R</a></td> <td>2.4</td> <td>2.4.29</td> </tr>
+<tr> <td><a href="Code/02/2-4-30.R">2-4-30.R</a></td> <td>2.4</td> <td>2.4.30</td> </tr>
+<tr> <td><a href="Code/02/2-4-31.R">2-4-31.R</a></td> <td>2.4</td> <td>2.4.31</td> </tr>
+<tr> <td><a href="Code/02/2-4-32.R">2-4-32.R</a></td> <td>2.4</td> <td>2.4.32</td> </tr>
+<tr> <td><a href="Code/02/2-4-33.R">2-4-33.R</a></td> <td>2.4</td> <td>2.4.33</td> </tr>
+<tr> <td><a href="Code/02/2-4-34.R">2-4-34.R</a></td> <td>2.4</td> <td>2.4.34</td> </tr>
+<tr> <td><a href="Code/02/2-5-1.R">2-5-1.R</a></td> <td>2.5</td> <td>2.5.1</td> </tr>
+<tr> <td><a href="Code/02/2-5-2.R">2-5-2.R</a></td> <td>2.5</td> <td>2.5.2</td> </tr>
+<tr> <td><a href="Code/02/2-5-3.R">2-5-3.R</a></td> <td>2.5</td> <td>2.5.3</td> </tr>
+<tr> <td><a href="Code/02/2-5-4.R">2-5-4.R</a></td> <td>2.5</td> <td>2.5.4</td> </tr>
+<tr> <td><a href="Code/02/2-5-5.R">2-5-5.R</a></td> <td>2.5</td> <td>2.5.5</td> </tr>
+<tr> <td><a href="Code/02/2-5-6.R">2-5-6.R</a></td> <td>2.5</td> <td>2.5.6</td> </tr>
+<tr> <td><a href="Code/02/2-5-7.R">2-5-7.R</a></td> <td>2.5</td> <td>2.5.7</td> </tr>
+<tr> <td><a href="Code/02/2-5-8.R">2-5-8.R</a></td> <td>2.5</td> <td>2.5.8</td> </tr>
+<tr> <td><a href="Code/02/2-5-9.R">2-5-9.R</a></td> <td>2.5</td> <td>2.5.9</td> </tr>
+<tr> <td><a href="Code/02/2-5-10.R">2-5-10.R</a></td> <td>2.5</td> <td>2.5.10</td> </tr>
+<tr> <td><a href="Code/02/2-5-11.R">2-5-11.R</a></td> <td>2.5</td> <td>2.5.11</td> </tr>
+<tr> <td><a href="Code/02/2-6-1.R">2-6-1.R</a></td> <td>2.6</td> <td>2.6.1</td> </tr>
+<tr> <td><a href="Code/02/2-6-2.R">2-6-2.R</a></td> <td>2.6</td> <td>2.6.2</td> </tr>
+<tr> <td><a href="Code/02/2-6-3.R">2-6-3.R</a></td> <td>2.6</td> <td>2.6.3</td> </tr>
+</table>
+
+<h3>Code from Chapter 3</h3>
+
+<table>
+<tr> <th>Source file</th> <th>Section</th> <th>Example</th> </tr>
+<tr> <td><a href="Code/03/3-1-1.R">3-1-1.R</a></td> <td>3.1</td> <td>3.1.1</td> </tr>
+<tr> <td><a href="Code/03/3-2-1.R">3-2-1.R</a></td> <td>3.2</td> <td>3.2.1</td> </tr>
+<tr> <td><a href="Code/03/3-3-1.R">3-3-1.R</a></td> <td>3.3</td> <td>3.3.1</td> </tr>
+<tr> <td><a href="Code/03/3-3-2.R">3-3-2.R</a></td> <td>3.3</td> <td>3.3.2</td> </tr>
+<tr> <td><a href="Code/03/3-3-3.R">3-3-3.R</a></td> <td>3.3</td> <td>3.3.3</td> </tr>
+<tr> <td><a href="Code/03/3-3-4.R">3-3-4.R</a></td> <td>3.3</td> <td>3.3.4</td> </tr>
+<tr> <td><a href="Code/03/3-3-5.R">3-3-5.R</a></td> <td>3.3</td> <td>3.3.5</td> </tr>
+<tr> <td><a href="Code/03/3-3-6.R">3-3-6.R</a></td> <td>3.3</td> <td>3.3.6</td> </tr>
+<tr> <td><a href="Code/03/3-3-7.R">3-3-7.R</a></td> <td>3.3</td> <td>3.3.7</td> </tr>
+<tr> <td><a href="Code/03/3-3-8.R">3-3-8.R</a></td> <td>3.3</td> <td>3.3.8</td> </tr>
+<tr> <td><a href="Code/03/3-4-1.R">3-4-1.R</a></td> <td>3.4</td> <td>3.4.1</td> </tr>
+<tr> <td><a href="Code/03/3-4-2.R">3-4-2.R</a></td> <td>3.4</td> <td>3.4.2</td> </tr>
+<tr> <td><a href="Code/03/3-4-3.R">3-4-3.R</a></td> <td>3.4</td> <td>3.4.3</td> </tr>
+<tr> <td><a href="Code/03/3-4-4.R">3-4-4.R</a></td> <td>3.4</td> <td>3.4.4</td> </tr>
+<tr> <td><a href="Code/03/3-4-5.R">3-4-5.R</a></td> <td>3.4</td> <td>3.4.5</td> </tr>
+<tr> <td><a href="Code/03/3-5-1.R">3-5-1.R</a></td> <td>3.5</td> <td>3.5.1</td> </tr>
+<tr> <td><a href="Code/03/3-7-1.R">3-7-1.R</a></td> <td>3.7</td> <td>3.7.1</td> </tr>
+<tr> <td><a href="Code/03/3-7-2.R">3-7-2.R</a></td> <td>3.7</td> <td>3.7.2</td> </tr>
+</table>
+
+<h3>Code from Chapter 4</h3>
+
+<table>
+<tr> <th>Source file</th> <th>Section</th> <th>Example</th> </tr>
+<tr> <td><a href="Code/04/4-1-1.R">4-1-1.R</a></td> <td>4.1</td> <td>4.1.1</td> </tr>
+<tr> <td><a href="Code/04/4-2-1.R">4-2-1.R</a></td> <td>4.2</td> <td>4.2.1</td> </tr>
+<tr> <td><a href="Code/04/4-3-1.R">4-3-1.R</a></td> <td>4.3</td> <td>4.3.1</td> </tr>
+<tr> <td><a href="Code/04/4-3-2.R">4-3-2.R</a></td> <td>4.3</td> <td>4.3.2</td> </tr>
+<tr> <td><a href="Code/04/4-3-3.R">4-3-3.R</a></td> <td>4.3</td> <td>4.3.3</td> </tr>
+<tr> <td><a href="Code/04/4-3-4.R">4-3-4.R</a></td> <td>4.3</td> <td>4.3.4</td> </tr>
+<tr> <td><a href="Code/04/4-4-1.R">4-4-1.R</a></td> <td>4.4</td> <td>4.4.1</td> </tr>
+<tr> <td><a href="Code/04/4-4-2.R">4-4-2.R</a></td> <td>4.4</td> <td>4.4.2</td> </tr>
+<tr> <td><a href="Code/04/4-4-3.R">4-4-3.R</a></td> <td>4.4</td> <td>4.4.3</td> </tr>
+</table>
+
+<h3>Code from Chapter 5</h3>
+
+<table>
+<tr> <th>Source file</th> <th>Section</th> <th>Example</th> </tr>
+<tr> <td><a href="Code/05/5-1-1.R">5-1-1.R</a></td> <td>5.1</td> <td>5.1.1</td> </tr>
+<tr> <td><a href="Code/05/5-2-1.R">5-2-1.R</a></td> <td>5.2</td> <td>5.2.1</td> </tr>
+<tr> <td><a href="Code/05/5-2-2.R">5-2-2.R</a></td> <td>5.2</td> <td>5.2.2</td> </tr>
+<tr> <td><a href="Code/05/5-2-3.R">5-2-3.R</a></td> <td>5.2</td> <td>5.2.3</td> </tr>
+<tr> <td><a href="Code/05/5-2-4.R">5-2-4.R</a></td> <td>5.2</td> <td>5.2.4</td> </tr>
+<tr> <td><a href="Code/05/5-2-5.R">5-2-5.R</a></td> <td>5.2</td> <td>5.2.5</td> </tr>
+<tr> <td><a href="Code/05/5-2-6.R">5-2-6.R</a></td> <td>5.2</td> <td>5.2.6</td> </tr>
+<tr> <td><a href="Code/05/5-2-7.R">5-2-7.R</a></td> <td>5.2</td> <td>5.2.7</td> </tr>
+<tr> <td><a href="Code/05/5-3-1.R">5-3-1.R</a></td> <td>5.3</td> <td>5.3.1</td> </tr>
+<tr> <td><a href="Code/05/5-3-2.R">5-3-2.R</a></td> <td>5.3</td> <td>5.3.2</td> </tr>
+<tr> <td><a href="Code/05/5-3-3.R">5-3-3.R</a></td> <td>5.3</td> <td>5.3.3</td> </tr>
+<tr> <td><a href="Code/05/5-3-4.R">5-3-4.R</a></td> <td>5.3</td> <td>5.3.4</td> </tr>
+<tr> <td><a href="Code/05/5-4-1.R">5-4-1.R</a></td> <td>5.4</td> <td>5.4.1</td> </tr>
+</table>
+
+
+<h3>Code from Chapter 6</h3>
+
+<table>
+<tr> <th>Source file</th> <th>Section</th> <th>Example</th> </tr>
+<tr> <td><a href="Code/06/6-1-1.R">6-1-1.R</a></td> <td>6.1</td> <td>6.1.1</td> </tr>
+<tr> <td><a href="Code/06/6-2-1.R">6-2-1.R</a></td> <td>6.2</td> <td>6.2.1</td> </tr>
+<tr> <td><a href="Code/06/6-2-2.R">6-2-2.R</a></td> <td>6.2</td> <td>6.2.2</td> </tr>
+<tr> <td><a href="Code/06/6-3-1.R">6-3-1.R</a></td> <td>6.3</td> <td>6.3.1</td> </tr>
+<tr> <td><a href="Code/06/6-3-2.R">6-3-2.R</a></td> <td>6.3</td> <td>6.3.2</td> </tr>
+<tr> <td><a href="Code/06/6-3-3.R">6-3-3.R</a></td> <td>6.3</td> <td>6.3.3</td> </tr>
+<tr> <td><a href="Code/06/6-3-4.R">6-3-4.R</a></td> <td>6.3</td> <td>6.3.4</td> </tr>
+<tr> <td><a href="Code/06/6-4-1.R">6-4-1.R</a></td> <td>6.4</td> <td>6.4.1</td> </tr>
+<tr> <td><a href="Code/06/6-5-1.R">6-5-1.R</a></td> <td>6.5</td> <td>6.5.1</td> </tr>
+</table>
+
+<h3>Code from Chapter 7</h3>
+
+<table>
+<tr> <th>Source file</th> <th>Section</th> <th>Example</th> </tr>
+<tr> <td><a href="Code/07/7-1-1.R">7-1-1.R</a></td> <td>7.1</td> <td>7.1.1</td> </tr>
+<tr> <td><a href="Code/07/7-2-1.R">7-2-1.R</a></td> <td>7.2</td> <td>7.2.1</td> </tr>
+<tr> <td><a href="Code/07/7-2-2.R">7-2-2.R</a></td> <td>7.2</td> <td>7.2.2</td> </tr>
+<tr> <td><a href="Code/07/7-2-3.R">7-2-3.R</a></td> <td>7.2</td> <td>7.2.3</td> </tr>
+<tr> <td><a href="Code/07/7-2-4.R">7-2-4.R</a></td> <td>7.2</td> <td>7.2.4</td> </tr>
+<tr> <td><a href="Code/07/7-2-5.R">7-2-5.R</a></td> <td>7.2</td> <td>7.2.5</td> </tr>
+<tr> <td><a href="Code/07/7-2-6.R">7-2-6.R</a></td> <td>7.2</td> <td>7.2.6</td> </tr>
+<tr> <td><a href="Code/07/7-2-7.R">7-2-7.R</a></td> <td>7.2</td> <td>7.2.7</td> </tr>
+<tr> <td><a href="Code/07/7-2-8.R">7-2-8.R</a></td> <td>7.2</td> <td>7.2.8</td> </tr>
+<tr> <td><a href="Code/07/7-2-9.R">7-2-9.R</a></td> <td>7.2</td> <td>7.2.9</td> </tr>
+<tr> <td><a href="Code/07/7-2-10.R">7-2-10.R</a></td> <td>7.2</td> <td>7.2.10</td> </tr>
+<tr> <td><a href="Code/07/7-2-11.R">7-2-11.R</a></td> <td>7.2</td> <td>7.2.11</td> </tr>
+<tr> <td><a href="Code/07/7-2-12.R">7-2-12.R</a></td> <td>7.2</td> <td>7.2.12</td> </tr>
+<tr> <td><a href="Code/07/7-2-13.R">7-2-13.R</a></td> <td>7.2</td> <td>7.2.13</td> </tr>
+<tr> <td><a href="Code/07/7-2-14.R">7-2-14.R</a></td> <td>7.2</td> <td>7.2.14</td> </tr>
+<tr> <td><a href="Code/07/7-2-15.R">7-2-15.R</a></td> <td>7.2</td> <td>7.2.15</td> </tr>
+<tr> <td><a href="Code/07/7-2-16.R">7-2-16.R</a></td> <td>7.2</td> <td>7.2.16</td> </tr>
+<tr> <td><a href="Code/07/7-2-17.R">7-2-17.R</a></td> <td>7.2</td> <td>7.2.17</td> </tr>
+<tr> <td><a href="Code/07/7-3-1.R">7-3-1.R</a></td> <td>7.3</td> <td>7.3.1</td> </tr>
+<tr> <td><a href="Code/07/7-3-2.R">7-3-2.R</a></td> <td>7.3</td> <td>7.3.2</td> </tr>
+<tr> <td><a href="Code/07/7-3-3.R">7-3-3.R</a></td> <td>7.3</td> <td>7.3.3</td> </tr>
+<tr> <td><a href="Code/07/7-3-4.R">7-3-4.R</a></td> <td>7.3</td> <td>7.3.4</td> </tr>
+<tr> <td><a href="Code/07/7-3-5.R">7-3-5.R</a></td> <td>7.3</td> <td>7.3.5</td> </tr>
+</table>
+
+<h3>Code from Chapter 8</h3>
+
+<table>
+<tr> <th>Source file</th> <th>Section</th> <th>Example</th> </tr>
+<tr> <td><a href="Code/08/8-1-1.R">8-1-1.R</a></td> <td>8.1</td> <td>8.1.1</td> </tr>
+<tr> <td><a href="Code/08/8-2-1.R">8-2-1.R</a></td> <td>8.2</td> <td>8.2.1</td> </tr>
+<tr> <td><a href="Code/08/8-2-2.R">8-2-2.R</a></td> <td>8.2</td> <td>8.2.2</td> </tr>
+<tr> <td><a href="Code/08/8-3-1.R">8-3-1.R</a></td> <td>8.3</td> <td>8.3.1</td> </tr>
+<tr> <td><a href="Code/08/8-3-2.R">8-3-2.R</a></td> <td>8.3</td> <td>8.3.2</td> </tr>
+<tr> <td><a href="Code/08/8-3-3.R">8-3-3.R</a></td> <td>8.3</td> <td>8.3.3</td> </tr>
+<tr> <td><a href="Code/08/8-3-4.R">8-3-4.R</a></td> <td>8.3</td> <td>8.3.4</td> </tr>
+<tr> <td><a href="Code/08/8-6-1.R">8-4-1.R</a></td> <td>8.4</td> <td>8.4.1</td> </tr>
+<tr> <td><a href="Code/08/8-6-1.R">8-6-1.R</a></td> <td>8.6</td> <td>8.6.1</td> </tr>
+<tr> <td><a href="Code/08/8-6-2.R">8-6-2.R</a></td> <td>8.6</td> <td>8.6.2</td> </tr>
+<tr> <td><a href="Code/08/8-6-3.R">8-6-3.R</a></td> <td>8.6</td> <td>8.6.3</td> </tr>
+<tr> <td><a href="Code/08/8-6-4.R">8-6-4.R</a></td> <td>8.6</td> <td>8.6.4</td> </tr>
+</table>
+
+<h3>Code from Chapter 09</h3>
+
+<table>
+<tr> <th>Source file</th> <th>Section</th> <th>Example</th> </tr>
+<tr> <td><a href="Code/09/9-1-1.R">9-1-1.R</a></td> <td>9.1</td> <td>9.1.1</td> </tr>
+<tr> <td><a href="Code/09/9-2-1.R">9-2-1.R</a></td> <td>9.2</td> <td>9.2.1</td> </tr>
+<tr> <td><a href="Code/09/9-3-1.R">9-3-1.R</a></td> <td>9.3</td> <td>9.3.1</td> </tr>
+<tr> <td><a href="Code/09/9-3-2.R">9-3-2.R</a></td> <td>9.3</td> <td>9.3.2</td> </tr>
+<tr> <td><a href="Code/09/9-3-3.R">9-3-3.R</a></td> <td>9.3</td> <td>9.3.3</td> </tr>
+<tr> <td><a href="Code/09/9-3-4.R">9-3-4.R</a></td> <td>9.3</td> <td>9.3.4</td> </tr>
+<tr> <td><a href="Code/09/9-3-5.R">9-3-5.R</a></td> <td>9.3</td> <td>9.3.5</td> </tr>
+<tr> <td><a href="Code/09/9-3-6.R">9-3-6.R</a></td> <td>9.3</td> <td>9.3.6</td> </tr>
+<tr> <td><a href="Code/09/9-3-7.R">9-3-7.R</a></td> <td>9.3</td> <td>9.3.7</td> </tr>
+<tr> <td><a href="Code/09/9-3-8.R">9-3-8.R</a></td> <td>9.3</td> <td>9.3.8</td> </tr>
+<tr> <td><a href="Code/09/9-5-1.R">9-5-1.R</a></td> <td>9.5</td> <td>9.5.1</td> </tr>
+<tr> <td><a href="Code/09/9-7-1.R">9-7-1.R</a></td> <td>9.7</td> <td>9.7.1</td> </tr>
+<tr> <td><a href="Code/09/9-7-2.R">9-7-2.R</a></td> <td>9.7</td> <td>9.7.2</td> </tr>
+<tr> <td><a href="Code/09/9-8-1.R">9-8-1.R</a></td> <td>9.8</td> <td>9.8.1</td> </tr>
+<tr> <td><a href="Code/09/9-8-2.R">9-8-2.R</a></td> <td>9.8</td> <td>9.8.2</td> </tr>
+</table>
+
+
+<h3>Code from Chapter 10</h3>
+
+<table>
+<tr> <th>Source file</th> <th>Section</th> <th>Example</th> </tr>
+<tr> <td><a href="Code/10/10-1-1.R">10-1-1.R</a></td> <td>10.1</td> <td>10.1.1</td> </tr>
+<tr> <td><a href="Code/10/10-2-1.R">10-2-1.R</a></td> <td>10.2</td> <td>10.2.1</td> </tr>
+<tr> <td><a href="Code/10/10-2-2.R">10-2-2.R</a></td> <td>10.2</td> <td>10.2.2</td> </tr>
+<tr> <td><a href="Code/10/10-2-3.R">10-2-3.R</a></td> <td>10.2</td> <td>10.2.3</td> </tr>
+<tr> <td><a href="Code/10/10-2-4.R">10-2-4.R</a></td> <td>10.2</td> <td>10.2.4</td> </tr>
+<tr> <td><a href="Code/10/10-2-5.R">10-2-5.R</a></td> <td>10.2</td> <td>10.2.5</td> </tr>
+<tr> <td><a href="Code/10/10-2-6.R">10-2-6.R</a></td> <td>10.2</td> <td>10.2.6</td> </tr>
+<tr> <td><a href="Code/10/10-2-7.R">10-2-7.R</a></td> <td>10.2</td> <td>10.2.7</td> </tr>
+<tr> <td><a href="Code/10/10-2-8.R">10-2-8.R</a></td> <td>10.2</td> <td>10.2.8</td> </tr>
+<tr> <td><a href="Code/10/10-2-9.R">10-2-9.R</a></td> <td>10.2</td> <td>10.2.9</td> </tr>
+<tr> <td><a href="Code/10/10-3-1.R">10-3-1.R</a></td> <td>10.3</td> <td>10.3.1</td> </tr>
+<tr> <td><a href="Code/10/10-3-2.R">10-3-2.R</a></td> <td>10.3</td> <td>10.3.2</td> </tr>
+<tr> <td><a href="Code/10/10-3-3.R">10-3-3.R</a></td> <td>10.3</td> <td>10.3.3</td> </tr>
+<tr> <td><a href="Code/10/10-3-4.R">10-3-4.R</a></td> <td>10.3</td> <td>10.3.4</td> </tr>
+<tr> <td><a href="Code/10/10-3-5.R">10-3-5.R</a></td> <td>10.3</td> <td>10.3.5</td> </tr>
+</table>
+
+<h3>Code from Chapter 11</h3>
+
+<table>
+<tr> <th>Source file</th> <th>Section</th> <th>Example</th> </tr>
+<tr> <td><a href="Code/11/11-1-1.R">11-1-1.R</a></td> <td>11.1</td> <td>11.1.1</td> </tr>
+<tr> <td><a href="Code/11/11-2-1.R">11-2-1.R</a></td> <td>11.2</td> <td>11.2.1</td> </tr>
+<tr> <td><a href="Code/11/11-3-1.R">11-3-1.R</a></td> <td>11.3</td> <td>11.3.1</td> </tr>
+<tr> <td><a href="Code/11/11-3-2.R">11-3-2.R</a></td> <td>11.3</td> <td>11.3.2</td> </tr>
+<tr> <td><a href="Code/11/11-3-3.R">11-3-3.R</a></td> <td>11.3</td> <td>11.3.3</td> </tr>
+<tr> <td><a href="Code/11/11-3-4.R">11-3-4.R</a></td> <td>11.3</td> <td>11.3.4</td> </tr>
+<tr> <td><a href="Code/11/11-3-5.R">11-3-5.R</a></td> <td>11.3</td> <td>11.3.5</td> </tr>
+<tr> <td><a href="Code/11/11-3-6.R">11-3-6.R</a></td> <td>11.3</td> <td>11.3.6</td> </tr>
+<tr> <td><a href="Code/11/11-3-7.R">11-3-7.R</a></td> <td>11.3</td> <td>11.3.7</td> </tr>
+<tr> <td><a href="Code/11/11-3-8.R">11-3-8.R</a></td> <td>11.3</td> <td>11.3.8</td> </tr>
+<tr> <td><a href="Code/11/11-4-1.R">11-4-1.R</a></td> <td>11.4</td> <td>11.4.1</td> </tr>
+<tr> <td><a href="Code/11/11-4-2.R">11-4-2.R</a></td> <td>11.4</td> <td>11.4.2</td> </tr>
+<tr> <td><a href="Code/11/11-4-3.R">11-4-3.R</a></td> <td>11.4</td> <td>11.4.3</td> </tr>
+<tr> <td><a href="Code/11/11-4-4.R">11-4-4.R</a></td> <td>11.4</td> <td>11.4.4</td> </tr>
+</table>
+
+<h3>Code from Chapter 12</h3>
+
+<table>
+<tr> <th>Source file</th> <th>Section</th> <th>Example</th> </tr>
+<tr> <td><a href="Code/12/12-1-1.R">12-1-1.R</a></td> <td>12.1</td> <td>12.1.1</td> </tr>
+<tr> <td><a href="Code/12/12-2-1.R">12-2-1.R</a></td> <td>12.2</td> <td>12.2.1</td> </tr>
+<tr> <td><a href="Code/12/12-3-1.R">12-3-1.R</a></td> <td>12.3</td> <td>12.3.1</td> </tr>
+<tr> <td><a href="Code/12/12-4-1.R">12-4-1.R</a></td> <td>12.4</td> <td>12.4.1</td> </tr>
+<tr> <td><a href="Code/12/12-4-2.R">12-4-2.R</a></td> <td>12.4</td> <td>12.4.2</td> </tr>
+<tr> <td><a href="Code/12/12-6-1.R">12-6-1.R</a></td> <td>12.6</td> <td>12.6.1</td> </tr>
+</table>
+
+<h3>Code from Chapter 13</h3>
+
+<table>
+<tr> <th>Source file</th> <th>Section</th> <th>Example</th> </tr>
+<tr> <td><a href="Code/13/13-1-1.R">13-1-1.R</a></td> <td>13.1</td> <td>13.1.1</td> </tr>
+<tr> <td><a href="Code/13/13-2-1.R">13-2-1.R</a></td> <td>13.2</td> <td>13.2.1</td> </tr>
+<tr> <td><a href="Code/13/13-3-1.R">13-3-1.R</a></td> <td>13.3</td> <td>13.3.1</td> </tr>
+<tr> <td><a href="Code/13/13-3-2.R">13-3-2.R</a></td> <td>13.3</td> <td>13.3.2</td> </tr>
+<tr> <td><a href="Code/13/13-3-3.R">13-3-3.R</a></td> <td>13.3</td> <td>13.3.3</td> </tr>
+<tr> <td><a href="Code/13/13-3-4.R">13-3-4.R</a></td> <td>13.3</td> <td>13.3.4</td> </tr>
+<tr> <td><a href="Code/13/13-3-5.R">13-3-5.R</a></td> <td>13.3</td> <td>13.3.5</td> </tr>
+<tr> <td><a href="Code/13/13-3-6.R">13-3-6.R</a></td> <td>13.3</td> <td>13.3.6</td> </tr>
+<tr> <td><a href="Code/13/13-4-1.R">13-4-1.R</a></td> <td>13.4</td> <td>13.4.1</td> </tr>
+<tr> <td><a href="Code/13/13-5-1.R">13-5-1.R</a></td> <td>13.5</td> <td>13.5.1</td> </tr>
+<tr> <td><a href="Code/13/13-6-1.R">13-6-1.R</a></td> <td>13.6</td> <td>13.6.1</td> </tr>
+<tr> <td><a href="Code/13/13-6-2.R">13-6-2.R</a></td> <td>13.6</td> <td>13.6.2</td> </tr>
+</table>
+
+<h3>Code from Chapter 14</h3>
+
+<table>
+<tr> <th>Source file</th> <th>Section</th> <th>Example</th> </tr>
+<tr> <td><a href="Code/14/14-1-1.R">14-1-1.R</a></td> <td>14.1</td> <td>14.1.1</td> </tr>
+<tr> <td><a href="Code/14/14-1-2.R">14-1-2.R</a></td> <td>14.1</td> <td>14.1.2</td> </tr>
+<tr> <td><a href="Code/14/14-2-1.R">14-2-1.R</a></td> <td>14.2</td> <td>14.2.1</td> </tr>
+<tr> <td><a href="Code/14/14-2-2.R">14-2-2.R</a></td> <td>14.2</td> <td>14.2.2</td> </tr>
+<tr> <td><a href="Code/14/14-2-3.R">14-2-3.R</a></td> <td>14.2</td> <td>14.2.3</td> </tr>
+<tr> <td><a href="Code/14/14-2-4.R">14-2-4.R</a></td> <td>14.2</td> <td>14.2.4</td> </tr>
+<tr> <td><a href="Code/14/14-2-5.R">14-2-5.R</a></td> <td>14.2</td> <td>14.2.5</td> </tr>
+<tr> <td><a href="Code/14/14-3-1.R">14-3-1.R</a></td> <td>14.3</td> <td>14.3.1</td> </tr>
+<tr> <td><a href="Code/14/14-3-2.R">14-3-2.R</a></td> <td>14.3</td> <td>14.3.2</td> </tr>
+<tr> <td><a href="Code/14/14-3-3.R">14-3-3.R</a></td> <td>14.3</td> <td>14.3.3</td> </tr>
+<tr> <td><a href="Code/14/14-3-4.R">14-3-4.R</a></td> <td>14.3</td> <td>14.3.4</td> </tr>
+<tr> <td><a href="Code/14/14-3-5.R">14-3-5.R</a></td> <td>14.3</td> <td>14.3.5</td> </tr>
+<tr> <td><a href="Code/14/14-4-1.R">14-4-1.R</a></td> <td>14.4</td> <td>14.4.1</td> </tr>
+<tr> <td><a href="Code/14/14-4-2.R">14-4-2.R</a></td> <td>14.4</td> <td>14.4.2</td> </tr>
+<tr> <td><a href="Code/14/14-4-3.R">14-4-3.R</a></td> <td>14.4</td> <td>14.4.2</td> </tr>
+</table>
+
+<h3>Code from Chapter 15</h3>
+
+<table>
+<tr> <th>Source file</th> <th>Section</th> <th>Example</th> </tr>
+<tr> <td><a href="Code/15/15-1-1.R">15-1-1.R</a></td> <td>15.1</td> <td>15.1.1</td> </tr>
+<tr> <td><a href="Code/15/15-3-1.R">15-3-1.R</a></td> <td>15.3</td> <td>15.3.1</td> </tr>
+<tr> <td><a href="Code/15/15-3-2.R">15-3-2.R</a></td> <td>15.3</td> <td>15.3.2</td> </tr>
+<tr> <td><a href="Code/15/15-3-3.R">15-3-3.R</a></td> <td>15.3</td> <td>15.3.3</td> </tr>
+<tr> <td><a href="Code/15/15-3-4.R">15-3-4.R</a></td> <td>15.3</td> <td>15.3.4</td> </tr>
+<tr> <td><a href="Code/15/15-3-5.R">15-3-5.R</a></td> <td>15.3</td> <td>15.3.5</td> </tr>
+<tr> <td><a href="Code/15/15-4-1.R">15-4-1.R</a></td> <td>15.4</td> <td>15.4.1</td> </tr>
+<tr> <td><a href="Code/15/15-4-2.R">15-4-2.R</a></td> <td>15.4</td> <td>15.4.2</td> </tr>
+<tr> <td><a href="Code/15/15-4-3.R">15-4-3.R</a></td> <td>15.4</td> <td>15.4.3</td> </tr>
+<tr> <td><a href="Code/15/15-4-4.R">15-4-4.R</a></td> <td>15.4</td> <td>15.4.4</td> </tr>
+<tr> <td><a href="Code/15/15-5-1.R">15-5-1.R</a></td> <td>15.5</td> <td>15.5.1</td> </tr>
+<tr> <td><a href="Code/15/15-5-2.R">15-5-2.R</a></td> <td>15.5</td> <td>15.5.2</td> </tr>
+<tr> <td><a href="Code/15/15-5-3.R">15-5-3.R</a></td> <td>15.5</td> <td>15.5.3</td> </tr>
+<tr> <td><a href="Code/15/15-5-4.R">15-5-4.R</a></td> <td>15.5</td> <td>15.5.4</td> </tr>
+<tr> <td><a href="Code/15/15-5-5.R">15-5-5.R</a></td> <td>15.5</td> <td>15.5.5</td> </tr>
+<tr> <td><a href="Code/15/15-5-6.R">15-5-6.R</a></td> <td>15.5</td> <td>15.5.6</td> </tr>
+<tr> <td><a href="Code/15/15-6-1.R">15-6-1.R</a></td> <td>15.6</td> <td>15.6.1</td> </tr>
+</table>
+
+<h3>Code from Chapter 16</h3>
+
+<table>
+<tr> <th>Source file</th> <th>Section</th> <th>Example</th> </tr>
+<tr> <td><a href="Code/16/16-1-1.R">16-1-1.R</a></td> <td>16.1</td> <td>16.1.1</td> </tr>
+<tr> <td><a href="Code/16/16-2-1.R">16-2-1.R</a></td> <td>16.2</td> <td>16.2.1</td> </tr>
+<tr> <td><a href="Code/16/16-2-2.R">16-2-2.R</a></td> <td>16.2</td> <td>16.2.2</td> </tr>
+<tr> <td><a href="Code/16/16-2-3.R">16-2-3.R</a></td> <td>16.2</td> <td>16.2.3</td> </tr>
+<tr> <td><a href="Code/16/16-2-4.R">16-2-4.R</a></td> <td>16.2</td> <td>16.2.4</td> </tr>
+<tr> <td><a href="Code/16/16-2-5.R">16-2-5.R</a></td> <td>16.2</td> <td>16.2.5</td> </tr>
+<tr> <td><a href="Code/16/16-2-6.R">16-2-6.R</a></td> <td>16.2</td> <td>16.2.6</td> </tr>
+<tr> <td><a href="Code/16/16-3-1.R">16-3-1.R</a></td> <td>16.3</td> <td>16.3.1</td> </tr>
+<tr> <td><a href="Code/16/16-3-2.R">16-3-2.R</a></td> <td>16.3</td> <td>16.3.2</td> </tr>
+<tr> <td><a href="Code/16/16-3-3.R">16-3-3.R</a></td> <td>16.3</td> <td>16.3.3</td> </tr>
+<tr> <td><a href="Code/16/16-4-1.R">16-4-1.R</a></td> <td>16.4</td> <td>16.4.1</td> </tr>
+<tr> <td><a href="Code/16/16-5-1.R">16-5-1.R</a></td> <td>16.5</td> <td>16.5.1</td> </tr>
+<tr> <td><a href="Code/16/16-6-1.R">16-6-1.R</a></td> <td>16.6</td> <td>16.6.1</td> </tr>
+<tr> <td><a href="Code/16/16-7-1.R">16-7-1.R</a></td> <td>16.7</td> <td>16.7.1</td> </tr>
+<tr> <td><a href="Code/16/16-7-2.R">16-7-2.R</a></td> <td>16.7</td> <td>16.7.2</td> </tr>
+</table>
+
+<h3>Code from Chapter 17</h3>
+
+<table>
+<tr> <th>Source file</th> <th>Section</th> <th>Example</th> </tr>
+<tr> <td><a href="Code/17/17-1-1.R">17-1-1.R</a></td> <td>17.1</td> <td>17.1.1</td> </tr>
+<tr> <td><a href="Code/17/17-2-1.R">17-2-1.R</a></td> <td>17.2</td> <td>17.2.1</td> </tr>
+<tr> <td><a href="Code/17/17-2-2.R">17-2-2.R</a></td> <td>17.2</td> <td>17.2.2</td> </tr>
+<tr> <td><a href="Code/17/17-3-1.R">17-3-1.R</a></td> <td>17.3</td> <td>17.3.1</td> </tr>
+<tr> <td><a href="Code/17/17-3-2.R">17-3-2.R</a></td> <td>17.3</td> <td>17.3.2</td> </tr>
+<tr> <td><a href="Code/17/17-3-3.R">17-3-3.R</a></td> <td>17.3</td> <td>17.3.3</td> </tr>
+<tr> <td><a href="Code/17/17-3-4.R">17-3-4.R</a></td> <td>17.3</td> <td>17.3.4</td> </tr>
+<tr> <td><a href="Code/17/17-3-5.R">17-3-5.R</a></td> <td>17.3</td> <td>17.3.5</td> </tr>
+<tr> <td><a href="Code/17/17-4-1.R">17-4-1.R</a></td> <td>17.4</td> <td>17.4.1</td> </tr>
+<tr> <td><a href="Code/17/17-4-2.R">17-4-2.R</a></td> <td>17.4</td> <td>17.4.2</td> </tr>
+<tr> <td><a href="Code/17/17-4-3.R">17-4-3.R</a></td> <td>17.4</td> <td>17.4.3</td> </tr>
+<tr> <td><a href="Code/17/17-4-4.R">17-4-4.R</a></td> <td>17.4</td> <td>17.4.4</td> </tr>
+<tr> <td><a href="Code/17/17-4-5.R">17-4-5.R</a></td> <td>17.4</td> <td>17.4.5</td> </tr>
+</table>
+
+<h3>Code from Chapter 18</h3>
+
+<table>
+<tr> <th>Source file</th> <th>Section</th> <th>Example</th> </tr>
+<tr> <td><a href="Code/18/18-1-1.R">18-1-1.R</a></td> <td>18.1</td> <td>18.1.1</td> </tr>
+<tr> <td><a href="Code/18/18-2-1.R">18-2-1.R</a></td> <td>18.2</td> <td>18.2.1</td> </tr>
+<tr> <td><a href="Code/18/18-3-1.R">18-3-1.R</a></td> <td>18.3</td> <td>18.3.1</td> </tr>
+<tr> <td><a href="Code/18/18-3-2.R">18-3-2.R</a></td> <td>18.3</td> <td>18.3.2</td> </tr>
+<tr> <td><a href="Code/18/18-3-3.R">18-3-3.R</a></td> <td>18.3</td> <td>18.3.3</td> </tr>
+<tr> <td><a href="Code/18/18-4-1.R">18-4-1.R</a></td> <td>18.4</td> <td>18.4.1</td> </tr>
+<tr> <td><a href="Code/18/18-4-2.R">18-4-2.R</a></td> <td>18.4</td> <td>18.4.2</td> </tr>
+<tr> <td><a href="Code/18/18-4-3.R">18-4-3.R</a></td> <td>18.4</td> <td>18.4.3</td> </tr>
+<tr> <td><a href="Code/18/18-4-4.R">18-4-4.R</a></td> <td>18.4</td> <td>18.4.4</td> </tr>
+<tr> <td><a href="Code/18/18-4-5.R">18-4-5.R</a></td> <td>18.4</td> <td>18.4.5</td> </tr>
+<tr> <td><a href="Code/18/18-4-6.R">18-4-6.R</a></td> <td>18.4</td> <td>18.4.6</td> </tr>
+<tr> <td><a href="Code/18/18-4-7.R">18-4-7.R</a></td> <td>18.4</td> <td>18.4.7</td> </tr>
+<tr> <td><a href="Code/18/18-4-8.R">18-4-8.R</a></td> <td>18.4</td> <td>18.4.8</td> </tr>
+<tr> <td><a href="Code/18/18-4-9.R">18-4-9.R</a></td> <td>18.4</td> <td>18.4.9</td> </tr>
+<tr> <td><a href="Code/18/18-5-1.R">18-5-1.R</a></td> <td>18.5</td> <td>18.5.1</td> </tr>
+</table>
+
+<h3>Code from Chapter 19</h3>
+
+<table>
+<tr> <th>Source file</th> <th>Section</th> <th>Example</th> </tr>
+<tr> <td><a href="Code/19/19-1-1.R">19-1-1.R</a></td> <td>19.1</td> <td>19.1.1</td> </tr>
+<tr> <td><a href="Code/19/19-3-1.R">19-3-1.R</a></td> <td>19.3</td> <td>19.3.1</td> </tr>
+<tr> <td><a href="Code/19/19-3-2.R">19-3-2.R</a></td> <td>19.3</td> <td>19.3.2</td> </tr>
+<tr> <td><a href="Code/19/19-3-3.R">19-3-3.R</a></td> <td>19.3</td> <td>19.3.3</td> </tr>
+<tr> <td><a href="Code/19/19-4-1.R">19-4-1.R</a></td> <td>19.4</td> <td>19.4.1</td> </tr>
+<tr> <td><a href="Code/19/19-4-2.R">19-4-2.R</a></td> <td>19.4</td> <td>19.4.2</td> </tr>
+<tr> <td><a href="Code/19/19-4-3.R">19-4-3.R</a></td> <td>19.4</td> <td>19.4.3</td> </tr>
+<tr> <td><a href="Code/19/19-4-4.R">19-4-4.R</a></td> <td>19.4</td> <td>19.4.4</td> </tr>
+<tr> <td><a href="Code/19/19-4-5.R">19-4-5.R</a></td> <td>19.4</td> <td>19.4.5</td> </tr>
+<tr> <td><a href="Code/19/19-4-6.R">19-4-6.R</a></td> <td>19.4</td> <td>19.4.6</td> </tr>
+<tr> <td><a href="Code/19/19-4-7.R">19-4-7.R</a></td> <td>19.4</td> <td>19.4.7</td> </tr>
+<tr> <td><a href="Code/19/19-4-8.R">19-4-8.R</a></td> <td>19.4</td> <td>19.4.8</td> </tr>
+<tr> <td><a href="Code/19/19-4-9.R">19-4-9.R</a></td> <td>19.4</td> <td>19.4.9</td> </tr>
+<tr> <td><a href="Code/19/19-5-1.R">19-5-1.R</a></td> <td>19.5</td> <td>19.5.1</td> </tr>
+<tr> <td><a href="Code/19/19-5-2.R">19-5-2.R</a></td> <td>19.5</td> <td>19.5.2</td> </tr>
+<tr> <td><a href="Code/19/19-5-3.R">19-5-3.R</a></td> <td>19.5</td> <td>19.5.3</td> </tr>
+<tr> <td><a href="Code/19/19-6-1.R">19-6-1.R</a></td> <td>19.6</td> <td>19.6.1</td> </tr>
+<tr> <td><a href="Code/19/19-6-2.R">19-6-2.R</a></td> <td>19.6</td> <td>19.6.2</td> </tr>
+</table>
+
+<h3>Code from Chapter 20</h3>
+
+<table>
+<tr> <th>Source file</th> <th>Section</th> <th>Example</th> </tr>
+<tr> <td><a href="Code/20/20-1.R">20-1.R</a></td> <td>20.1</td> <td></td> </tr>
+<tr> <td><a href="Code/20/20-2.R">20-2.R</a></td> <td>20.2</td> <td></td> </tr>
+<tr> <td><a href="Code/20/20-3.R">20-3.R</a></td> <td>20.3</td> <td></td> </tr>
+<tr> <td><a href="Code/20/20-4.R">20-4.R</a></td> <td>20.4</td> <td></td> </tr>
+</table>
+
+
+<h2>Datasets</h2>
+
+Several datasets available from
+the <a href="http://archive.ics.uci.edu/ml">UCI Machine Learning
+Repository</a> are used in the illustrative examples presented in most
+of the book, algorithm usage demonstrations, and case studies. Except
+for the datasets used for the case studies of Chapter 20, they do not
+have to be downloaded from the repository, since the examples and
+demonstrations use their copies available in the <code>mlbench</code>
+or <code>datasets</code> R packages (sometimes under slightly
+different names). It is still worthwhile to refer to the corresponding
+UCI pages for some basic characteristics of the data as well as
+information about their origin and past usage. The table presented
+below lists all the UCI datasets used in the book, providing their
+original repository names with links to their repository pages as well
+their R package names, where available.
+
+
+
+<table>
+<tr> <th>Dataset</th> <th>UCI name/link</th> <th>R package/name</th> </tr>
+<tr>
+  <td><i>Census Income</i></td>
+  <td><a href="http://archive.ics.uci.edu/ml/datasets/Census-Income+(KDD)">Census-Income (KDD)</a></td>
+  <td></td>
+</tr>
+<tr>
+  <td><i>Communities and Crime</i></td>
+  <td><a href="http://archive.ics.uci.edu/ml/datasets/Communities+and+Crime">Communities and Crime</a></td>
+  <td></td>
+</tr>
+<tr>
+  <td><i>Cover Type</i></td>
+  <td><a href="http://archive.ics.uci.edu/ml/datasets/Covertype">Covertype</a></td>
+  <td></td>
+</tr>
+<tr>
+  <td><i>Boston Housing</i></td>
+  <td><a href="http://archive.ics.uci.edu/ml/datasets/Housing">Housing</a></td>
+  <td><code>mlbench</code>/<code>BostonHousing</code></td>
+</tr>
+<tr>
+  <td><i>Breast Cancer</i></td>
+  <td><a href="http://archive.ics.uci.edu/ml/datasets/Breast+Cancer">Breast Cancer</a></td>
+  <td><code>mlbench</code>/<code>BreastCancer</code></td>
+</tr>
+<tr>
+  <td><i>Glass</i></td>
+  <td><a href="http://archive.ics.uci.edu/ml/datasets/Glass+Identification">Glass Identification</a></td>
+  <td><code>mlbench</code>/<code>Glass</code></td>
+</tr>
+<tr>
+  <td><i>HouseVotes84</i></td>
+  <td><a href="http://archive.ics.uci.edu/ml/datasets/Congressional+Voting+Records">Congressional Voting Records</a></td>
+  <td><code>mlbench</code>/<code>HouseVotes84</code></td>
+</tr>
+<tr>
+  <td><i>Iris</i></td>
+  <td><a href="http://archive.ics.uci.edu/ml/datasets/Iris">Iris</a></td>
+  <td><code>datasets</code>/<code>iris</code></td>
+</tr>
+<tr>
+  <td><i>Pima Indians Diabetes</i></td>
+  <td><a href="http://archive.ics.uci.edu/ml/datasets/Pima+Indians+Diabetes">Pima Indians Diabetes</a></td>
+  <td><code>mlbench</code>/<code>PimaIndiansDiabetes</code></td>
+</tr>
+<tr>
+  <td><i>Servo</i></td>
+  <td><a href="http://archive.ics.uci.edu/ml/datasets/Servo">Servo</a></td>
+  <td><code>mlbench</code>/<code>Servo</code></td>
+</tr>
+<tr>
+  <td><i>Soybean</i></td>
+  <td><a href="http://archive.ics.uci.edu/ml/datasets/Soybean+(Large)">Soybean (Large)</a></td>
+  <td><code>mlbench</code>/<code>Soybean</code></td>
+</tr>
+<tr>
+  <td><i>Vehicle Silhouettes</i></td>
+  <td><a href="http://archive.ics.uci.edu/ml/datasets/Statlog+(Vehicle+Silhouettes)">Statlog (Vehicle Silhouettes)</a></td>
+  <td><code>mlbench</code>/<code>Vehicle</code></td>
+</tr>
+</table>
+
+<h1></h1>
+<hr>
+<h1></h1>
+
+<address>
+<a href="mailto:p.cichosz@elka.pw.edu.pl">Paweł Cichosz</a>
+</address>
+
+</body>
+</html>

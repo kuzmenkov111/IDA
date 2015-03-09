@@ -1,0 +1,8 @@
+exportPattern("^[[:alpha:]]+")
+import(dmr.util)
+import(dmr.stats)
+import(dmr.dectree)
+import(dmr.regtree)
+import(dmr.claseval)
+import(dmr.regeval)
+import(e1071)

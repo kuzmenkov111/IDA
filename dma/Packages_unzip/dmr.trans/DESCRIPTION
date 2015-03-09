@@ -1,0 +1,21 @@
+Package: dmr.trans
+Type: Package
+Title: A package with example functions from the book Cichosz, P.
+        (2015): Data Mining Algorithms: Explained Using R
+Version: 1.0
+Date: 2014-06-30
+Author: Pawel Cichosz <p.cichosz@elka.pw.edu.pl>
+Maintainer: Pawel Cichosz <p.cichosz@elka.pw.edu.pl>
+Description: A package with example functions from Chapter 17 of the book Cichosz, P. (2015): Data Mining Algorithms: Explained Using R. See Appendix B or http://www.wiley.com/go/data_mining_algorithms for more details.
+License: GPL (>= 2)
+Imports: dmr.util, dmr.stats
+Suggests: dmr.data, dmr.claseval, rpart, e1071, mlbench
+Collate: attribute-transformation-modeling.R
+        attribute-transformation-non-modeling.R
+        attribute-transformation-encoding.R
+        attribute-transformation-standardization.R
+        attribute-transformation-normalization.R
+        attribute-transformation-imputation.R
+        attribute-transformation-aggregation.R multi-class-1ofk.R
+        multi-class-ecc-code.R multi-class-ecc.R multi-class-encoding.R
+Packaged: 2014-10-22 06:49:49 UTC; pcichosz

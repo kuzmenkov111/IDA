@@ -1,0 +1,5 @@
+exportPattern("^[[:alpha:]]+")
+import(dmr.util)
+import(dmr.dissim)
+import(dmr.kcenters)
+import(cluster)

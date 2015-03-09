@@ -1,0 +1,7 @@
+exportPattern("^[[:alpha:]]+")
+import(dmr.util)
+import(dmr.linclas)
+import(dmr.linreg)
+import(quadprog)
+import(kernlab)
+import(Matrix)

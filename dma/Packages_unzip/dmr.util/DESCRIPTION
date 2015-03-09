@@ -1,0 +1,12 @@
+Package: dmr.util
+Type: Package
+Title: A package with utility functions used in the book Cichosz, P.
+        (2015): Data Mining Algorithms: Explained Using R
+Version: 1.0
+Date: 2014-06-30
+Author: Pawel Cichosz
+Maintainer: Pawel Cichosz <p.cichosz@elka.pw.edu.pl>
+Description: A package with utility functions used in examples presented in the book Cichosz, P. (2015): Data Mining Algorithms: Explained Using R. See Appendix B or http://www.wiley.com/go/data_mining_algorithms for more details.
+License: GPL (>= 2)
+Suggests: dmr.data
+Packaged: 2014-10-22 06:49:50 UTC; pcichosz

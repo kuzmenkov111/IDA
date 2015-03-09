@@ -1,0 +1,8 @@
+import(rpart)
+import(dmr.util)
+import(dmr.stats)
+
+exportPattern("^[[:alpha:]]+")
+
+S3method(predict, dectree)
+S3method(predict, dectree.frac)
