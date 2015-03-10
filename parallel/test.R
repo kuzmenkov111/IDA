@@ -20,3 +20,35 @@ i = sapply(results, function(result) result$tot.withinss)
 result = results[[which.min(i)]]
 stopCluster(cl)
 
+## foreach
+library(foreach)
+# foreach with %do% is used to execute an R expression repeatedly
+# and return the results in some data structure or object, which is a list by default
+x = foreach(i=1:3) %do% sqrt(i)
+x = foreach(a=1:3, b=rep(10,3)) %do% (a+b)
+x = foreach(a=1:3, b=rep(10,3)) %do% {
+  a+b
+}
+# return a list of two elements
+x = foreach(a=1:1000, b=rep(10,2)) %do% (a+b)
+
+# .combine - c, +, -, rbind, cbind, sum
+# .multicombine, .maxcombine
+# .inorder - important if parallel
+x = foreach(i=1:3, .combine="c") %do% exp(i)
+x = foreach(i=1:3, .combine="cbind") %do% rnorm(4)
+myMean = function(x) { sum(x)/length(x) }
+x = foreach(i=1:4, .combine='c') %do% {
+  rand = rnorm(4)
+  sum(rand)/length(rand)
+}
+
+
+
+
+
+
+
+
+
+
