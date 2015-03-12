@@ -16,6 +16,5 @@ x = foreach(a=1:3, .combine="rbind") %do% exp(a)
 x = foreach(a=1:3, .combine="+") %do% exp(a)
 x = foreach(a=1:3, .combine="min") %do% exp(a)
 
-
-
-
+# http://adv-r.had.co.nz/Functionals.html
+# check map, reduce, filter
