@@ -1,0 +1,88 @@
+$ git clone git@github.com:jaehyeon-kim/jaehyeon-kim.github.io.git
+-- SSH key needs to be set up beforehand
+$ git remote set-url origin git@github.com:jaehyeon-kim/jaehyeon-kim.github.io.git
+$ git push origin master
+
+…or create a new repository on the command line
+
+touch README.md
+git init
+git add README.md
+git commit -m "first commit"
+git remote add origin git@github.com:jaehyeon-kim/AtomicScala.git
+git push -u origin master
+
+…or push an existing repository from the command line
+
+git remote add origin git@github.com:jaehyeon-kim/AtomicScala.git
+git push -u origin master
+
+…or import code from another repository
+
+You can initialize this repository with code from a Subversion, Mercurial, or TFS project.
+
+----
+====
+----
+github push 403 and Permission denied 
+http://benmearns.blogspot.com.au/2014/07/github-newb-mistake.html
+
+Initially I was getting
+
+error: The requested URL returned error: 403 Forbidden while accessing https://github.com/..
+
+on
+
+$ git push origin master
+
+I read a forum post that recommended
+
+$ vi .git/config
+
+and changing the url line from https://github.com/.. to ssh://github.com/..
+
+and then generating public/private keys and adding this to github.  After doing so I was getting
+
+Permission denied (publickey).
+fatal: The remote end hung up unexpectedly
+
+eventually I solve this by changing that url line in .git/config to
+
+url = git@github.com:LOGIN/REPONAME.git
+
+... I also made sure to run
+
+git config --global user.name "LOGIN"
+git config --global user.email EMAIL 
+
+################
+1. Create repository without README.md
+
+## I. Create a new repository on the command line
+touch README.md
+git init
+git add README.md
+git commit -m "first commit"
+git remote add origin https://github.com/jaehyeon-kim/LearningScala.git
+git push -u origin master
+
+## Error encountered
+$ git push -u origin master
+error: The requested URL returned error: 403 Forbidden while accessing https://github.com/jaehyeon-kim/LearningScala.git/info/refs
+
+fatal: HTTP request failed
+##
+
+## Git configuration file is modified
+$ vi .git/config
+
+url = git@github.com:LOGIN/REPONAME.git
+##
+
+## Make sure the following
+git config --global user.name "LOGIN"
+git config --global user.email EMAIL 
+
+## II. Push an existing repository from the command line
+git remote add origin https://github.com/jaehyeon-kim/LearningScala.git
+git push -u origin master

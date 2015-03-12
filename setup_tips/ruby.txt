@@ -1,0 +1,40 @@
+https://www.digitalocean.com/community/tutorials/how-to-install-ruby-on-rails-on-centos-6
+install ruby
+install rubygems
+
+https://github.com/jimweirich/rake
+install gem
+
+easy_install <- root access
+http://www.question-defense.com/2009/03/16/install-easy_install-via-yum-on-linux-centos-server
+
+pygment css
+https://github.com/richleland/pygments-css
+
+jekyll
+gem install jekyll
+
+---
+ruby 1.9.3 to install jekyll
+http://tecadmin.net/install-ruby-1-9-3-or-multiple-ruby-verson-on-centos-6-3-using-rvm/
+
+rvm installation
+http://rvm.io/rvm/install
+
+yum update + some extra from top
+rvm install from bottom
+continue on top <- from step 4
+---
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-56836077-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
