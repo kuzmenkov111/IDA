@@ -6,7 +6,7 @@ library(foreach)
 library(doParallel)
 
 ## basic examples
-x = foreach(a=1:3) %do% sqrt(i)
+x = foreach(a=1:3) %do% sqrt(a)
 x
 
 x = foreach(a=1:3, b=rep(10,3)) %do% (a + b)
