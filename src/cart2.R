@@ -1,28 +1,3 @@
-cartRPART = function(formula, trainData, testData=NULL, ...) {
-  if(class(trainData) != "data.frame" & ifelse(is.null(testData),TRUE,class(testData)=="data.frame"))
-    stop("data frames should be entered for train and test (if any) data")  
-  # extract response name and index
-  res.name = gsub(" ","",unlist(strsplit(formula,split="~"))[[1]])
-  res.ind = match(res.name, colnames(trainData))
-  if(res.name %in% colnames(trainData) == FALSE)
-    stop("response is not found in train data")
-  if(class(trainData[,res.ind]) != "factor") {
-    if(class(trainData[,res.ind]) != "numeric") {
-      stop("response should be either numeric or factor")
-    }
-  } 
-  if("rpart" %in% rownames(installed.packages()) == FALSE)
-    stop("rpart package is not installed")
-  if(!file.exists("src/mlUtils.R"))
-    stop("utility functions should be sourced")
-  
-  ## import utility functions
-  source("src/mlUtils.R")
-  # fit model
-  mod = rpart(formula=formula, data=trainData, control=rpart.control(cp=0))  
-}
-
-
 #
 # bestParam returns a matrix of least and best cp values given cp table of rpart object
 # 1 standard error rule is applied for best cp value cp, error and errStd are returned
@@ -204,3 +179,47 @@ regCM = function(actual, fitted, probs, type="Pred", ...) {
     updateCM(table(conv(actual,actual,probs),conv(fitted,actual,probs)),type)
   }
 }
+
+#
+# cartRPART() is a constructor that extends rpart object by rpart package
+#
+# Usage
+# http://jaehyeon-kim.github.io/r/2015/02/21/Quick-Trial-of-Turning-Analysis-into-S3-Object/
+# The above post explains the original object while minor modifications have been made since then.
+#
+# last modified on Mar 16, 2015
+#
+cartRPART = function(formula, trainData, testData=NULL, ...) {
+  if(class(trainData) != "data.frame" & ifelse(is.null(testData),TRUE,class(testData)=="data.frame"))
+    stop("data frames should be entered for train and test (if any) data")  
+  # extract response name and index
+  res.name = gsub(" ","",unlist(strsplit(formula,split="~"))[[1]])
+  res.ind = match(res.name, colnames(trainData))
+  if(res.name %in% colnames(trainData) == FALSE)
+    stop("response is not found in train data")
+  if(class(trainData[,res.ind]) != "factor") {
+    if(class(trainData[,res.ind]) != "numeric") {
+      stop("response should be either numeric or factor")
+    }
+  } 
+  if("rpart" %in% rownames(installed.packages()) == FALSE)
+    stop("rpart package is not installed")
+  if(!"bestParam" %in% ls())
+    stop("bestParam() is missing")
+
+  # fit model
+  mod = rpart(formula=formula, data=trainData, control=rpart.control(cp=0))
+  # cp
+  cp = bestParam(mod$cptable, "CP", "xerror", "xstd")
+  # performance and variable importance
+  perf = function(model, data, response, params, isTrain=TRUE, isLst=TRUE) {
+    param = if(isLst) params[1,1] else params[1,2]
+    fit = prune(model, cp=param)
+  }
+  
+  # train error
+  # test error
+  # variable importance
+}
+
+
