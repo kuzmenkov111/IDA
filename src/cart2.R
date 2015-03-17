@@ -1,5 +1,5 @@
 #
-# cartRPART() is a constructor that extends rpart object by rpart package
+# cartRPART() is a constructor that extends rpart object of rpart package
 #
 # Usage
 # http://jaehyeon-kim.github.io/r/2015/02/21/Quick-Trial-of-Turning-Analysis-into-S3-Object/
@@ -13,15 +13,11 @@ cartRPART = function(formula, trainData, testData=NULL, ...) {
   # extract response name and index
   res.name = gsub(" ","",unlist(strsplit(formula,split="~"))[[1]])
   res.ind = match(res.name, colnames(trainData))
-  if(res.name %in% colnames(trainData) == FALSE)
-    stop("response is not found in train data")
-  if(class(trainData[,res.ind]) != "factor") {
-    if(class(trainData[,res.ind]) != "numeric") {
-      stop("response should be either numeric or factor")
-    }
-  } 
-  if("rpart" %in% rownames(installed.packages()) == FALSE)
-    stop("rpart package is not installed")
+  if(res.name %in% colnames(trainData) == FALSE) stop("response is not found in train data")
+  if(class(trainData[,res.ind]) != "factor") 
+    if(class(trainData[,res.ind]) != "numeric") stop("response should be either numeric or factor")
+  if("rpart" %in% rownames(installed.packages()) == FALSE) stop("rpart package is not installed")
+
   # fit model
   require(rpart)
   mod = rpart(formula=formula, data=trainData, control=rpart.control(cp=0))
@@ -95,6 +91,37 @@ cartRPART = function(formula, trainData, testData=NULL, ...) {
   return(result)
 }
 
+cartBGG = function(formula, trainData, testData=NULL, ntree=1, ...) {
+  if(class(trainData) != "data.frame" & ifelse(is.null(testData),TRUE,class(testData)=="data.frame"))
+    stop("data frames should be entered for train and test (if any) data")  
+  # extract response name and index
+  res.name = gsub(" ","",unlist(strsplit(formula,split="~"))[[1]])
+  res.ind = match(res.name, colnames(trainData))
+  if(res.name %in% colnames(trainData) == FALSE) stop("response is not found in train data")
+  if(class(trainData[,res.ind]) != "factor") 
+    if(class(trainData[,res.ind]) != "numeric") stop("response should be either numeric or factor")
+  if("rpart" %in% rownames(installed.packages()) == FALSE) stop("rpart package is not installed")
+  
+  # create function for bootstrap
+  cartBoot = function(data) {
+    bag = sample(nrow(data), size=nrow(data), replace=TRUE)
+    list(bgg=data[bag,], out=data[-bag,])
+  }
+}
+
+df = data.frame(a=c(1,1,2,2), b=c(1:4))
+set.seed(125)
+cartBoot = function(data) {
+  bag = sample(nrow(data), size=nrow(data), replace=TRUE)
+  list(bgg=data[bag,], out=data[-bag,])
+}
+cartBoot(df)
+
+bag = sample(nrow(data), size=nrow(data), replace=TRUE)
+train = data[bag,]
+test = data[-bag,]
+
+
 ## data
 require(ISLR)
 data(Carseats)
@@ -114,8 +141,8 @@ trainData.rg = data.rg[trainIndex,]
 testData.rg = data.rg[-trainIndex,]
 
 set.seed(12357)
-cl = cartRPART(formula="High ~ .", trainData.cl, NULL)
-rg = cartRPART(formula="Sales ~ .", trainData.rg, NULL)
+cl = cartRPART(formula="High ~ .", trainData.cl, testData.cl)
+rg = cartRPART(formula="Sales ~ .", trainData.rg, testData.rg)
 
 
 

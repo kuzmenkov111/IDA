@@ -45,6 +45,7 @@ rm(list = ls())
 set.seed(1237)
 x = matrix(runif(500), 100)
 y = gl(2,50)
+
 split = detectCores()
 eachTrees = 250
 # define function to fit random forest given predictors and response
@@ -68,6 +69,7 @@ rm(list = ls())
 set.seed(1237)
 x = matrix(runif(500), 100)
 y = gl(2,50)
+
 split = detectCores()
 eachTrees = 250
 # set up iterators
@@ -76,7 +78,7 @@ iters = iter(rep(eachTrees, split))
 cl = makeCluster(split)
 clusterSetRNGStream(cl, iseed=1237)
 registerDoParallel(cl)
-result = foreach(ntree=iters, .combine=combine, .packages="randomForest") %dopar%
+result = foreach(ntree=iters, .combine="combine", .packages="randomForest") %dopar%
   randomForest(x, y, ntree=ntree)
 stopCluster(cl)
 
