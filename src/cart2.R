@@ -91,6 +91,13 @@ cartRPART = function(formula, trainData, testData=NULL, ...) {
   return(result)
 }
 
+#
+# cartBGG() is a constructor that create a bagged tree
+#
+# Usage
+#
+# last modified on Mar 19, 2015
+#
 cartBGG = function(formula, trainData, testData=NULL, ntree=1, ...) {
   if(class(trainData) != "data.frame" & ifelse(is.null(testData),TRUE,class(testData)=="data.frame"))
     stop("data frames should be entered for train and test (if any) data")  
@@ -102,57 +109,84 @@ cartBGG = function(formula, trainData, testData=NULL, ntree=1, ...) {
     if(class(trainData[,res.ind]) != "numeric") stop("response should be either numeric or factor")
   if("rpart" %in% rownames(installed.packages()) == FALSE) stop("rpart package is not installed")
   
-  # create function for bootstrap
-  cartBoot = function(data) {
-    bag = sample(nrow(data), size=nrow(data), replace=TRUE)
-    list(bgg=data[bag,], out=data[-bag,])
+  # update individual error and variable importance
+  # create data frames to merge
+  # variable importance - merge by 'var'
+  var.imp = data.frame(var=colnames(trainData[,-res.ind]))
+  # oob prediction - row names as ind, merge by 'ind'
+  oob.pred = data.frame(ind=as.numeric(rownames(trainData)))  
+  oob.res = data.frame(res=trainData[,res.ind])
+  # test prediction - row names as ind, merge by 'ind'
+  if(!is.null(testData)) {
+    test.pred = data.frame(ind=as.numeric(rownames(testData)))
+    test.res = data.frame(res=testData[,res.ind])
+  } else {
+    test.pred = NULL
+    test.res = NULL
+  } 
+  require(rpart)
+  for(i in 1:ntree) {
+    # create in bag and out of bag sample
+    bag = sample(nrow(trainData), size=nrow(trainData), replace=TRUE)
+    inbag = trainData[bag,]
+    outbag = trainData[-bag,]
+    # fit model
+    mod = rpart(formula=formula, data=inbag, control=rpart.control(cp=0))
+    # set helper variables
+    colname = paste("s",i,sep=".")
+    pred.type = ifelse(class(trainData[,res.ind])=="factor","class","vector")
+    # merge variable importance
+    imp = data.frame(names(mod$variable.importance), mod$variable.importance)
+    colnames(imp) = c("var", colname)
+    var.imp = merge(var.imp, imp, by="var", all=TRUE)
+    # fit data
+    fit = function(obj, data, type, name) {
+      fit.mod = predict(object=obj, newdata=data, type=type)
+      fit.df = data.frame(as.numeric(names(fit.mod)), fit.mod, row.names=NULL)
+      colnames(fit.df) = c("ind", name)
+      fit.df
+    }    
+    # merge oob/test prediction
+    oob.fit = fit(mod, data=outbag, type=pred.type, name=colname)
+    oob.pred = merge(oob.pred, oob.fit, by="ind", all=TRUE)
+    if(!is.null(testData)) {
+      test.fit = fit(mod, data=testData, type=pred.type, name=colname)
+      test.pred = merge(test.pred, test.fit, by="ind", all=TRUE)      
+    }
   }
+  # adjust outcomes
+  rownames(var.imp) = var.imp[,1]
+  var.imp = var.imp[,2:ncol(var.imp)]
+  oob.pred = oob.pred[,2:ncol(oob.pred)]
+  if(!is.null(testData)) {
+    test.pred = test.pred[,2:ncol(test.pred)]
+  }
+  
+  # create outcome as a list
+  result=list(ntree=ntree, var.imp = var.imp
+              ,oob.res=oob.res, oob.pred=oob.pred
+              ,test.res=test.res, test.pred=test.pred)
+  class(result) = c("rpartbgg")
+  result
 }
 
-df = data.frame(a=c(1,1,2,2), b=c(1:4))
-set.seed(125)
-cartBoot = function(data) {
-  bag = sample(nrow(data), size=nrow(data), replace=TRUE)
-  list(bgg=data[bag,], out=data[-bag,])
+#
+# comBGG() returns consolidated variable importance measures
+#
+# Usage
+#
+# last modified on Mar 19, 2015
+#
+comBGG = function(...) {
+  # add rpart objects in a list
+  bgglist = list(...)
+  # extract variable importance
+  var.imp = lapply(bgglist, function(x) x$var.imp)
+  # combine and sum by row
+  var.imp = do.call("cbind", var.imp)
+  var.imp = apply(var.imp, 1, sum, na.rm=TRUE)
+  var.imp
 }
-cartBoot(df)
-
-bag = sample(nrow(data), size=nrow(data), replace=TRUE)
-train = data[bag,]
-test = data[-bag,]
-
-
-## data
-require(ISLR)
-data(Carseats)
-require(dplyr)
-Carseats = Carseats %>% 
-  mutate(High=factor(ifelse(Sales<=8,"No","High"),labels=c("High","No")))
-data.cl = subset(Carseats, select=c(-Sales))
-data.rg = subset(Carseats, select=c(-High))
-
-# split - cl: classification, rg: regression
-require(caret)
-set.seed(1237)
-trainIndex = createDataPartition(Carseats$High, p=0.8, list=FALSE, times=1)
-trainData.cl = data.cl[trainIndex,]
-testData.cl = data.cl[-trainIndex,]
-trainData.rg = data.rg[trainIndex,]
-testData.rg = data.rg[-trainIndex,]
-
-set.seed(12357)
-cl = cartRPART(formula="High ~ .", trainData.cl, testData.cl)
-rg = cartRPART(formula="Sales ~ .", trainData.rg, testData.rg)
-
-
-
-
-
-
-
-
-
-
 
 
 
