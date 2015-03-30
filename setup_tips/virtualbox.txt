@@ -1,0 +1,3 @@
+Internet connection
+
+Settings -> Network -> Attached to: NAT to Bridged Adapter
