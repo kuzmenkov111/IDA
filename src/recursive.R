@@ -40,3 +40,31 @@ power.rec(2, 1e3)
 power.rec(2, 1e4)
 #Error: protect(): protection stack overflow
 
+#Getting paired permutations in R
+#http://stackoverflow.com/questions/29724857/getting-paired-permutations-in-r/29725717#29725717
+names <- c("a", "b", "c", "d")
+names <- as.factor(names)
+nums <- seq_along(levels(names))[names]
+
+lst <- lapply(combn(nums, 2, simplify = FALSE), function(x) {
+  list(x, nums[!(nums %in% x)])
+})
+
+fst <- lapply(lst, function(x) x[[1]])
+snd <- lapply(lst, function(x) x[[2]])
+
+lapply(snd, function(x) {
+  x %in% fst
+})
+
+
+allocate <- function(data, n) {
+  lapply(combn(data, n, simplify = FALSE), function(x) {
+    list(x, data[!(data %in% x)])
+  })
+}
+
+
+
+
+
