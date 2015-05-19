@@ -43,11 +43,9 @@ power.rec(2, 1e4)
 #Getting paired permutations in R
 #http://stackoverflow.com/questions/29724857/getting-paired-permutations-in-r/29725717#29725717
 names <- c("a", "b", "c", "d")
-names <- as.factor(names)
-nums <- seq_along(levels(names))[names]
 
-lst <- lapply(combn(nums, 2, simplify = FALSE), function(x) {
-  list(x, nums[!(nums %in% x)])
+lst <- lapply(combn(names, 2, simplify = FALSE), function(x) {
+  list(x, names[!(names %in% x)])
 })
 
 fst <- lapply(lst, function(x) x[[1]])
@@ -59,12 +57,36 @@ lapply(snd, function(x) {
 
 
 allocate <- function(data, n) {
-  lapply(combn(data, n, simplify = FALSE), function(x) {
-    list(x, data[!(data %in% x)])
+  lst <- lapply(combn(data, n, simplify = FALSE), function(x) {
+    cbind(paste(sort(x), collapse=","), paste(sort(data[!(data %in% x)]), collapse=","))
   })
+  lst[1:as.integer(length(lst)/2)]
 }
 
+allocate.rec <- function(data, n) {
+  if(n == 4) {
+    lst <- lapply(combn(data, n, simplify = FALSE), function(x) {
+      list(x, data[!(data %in% x)])
+    })
+    lst[1:as.integer(length(lst)/2)]
+  } else {
+    
+  }
+}
 
+names <- c("a", "b", "c", "d", "e", "f")
+first <- combn(names, 2, simplify = FALSE)
+
+test <- lapply(first, function(x) {
+  c(sort(paste(x, collapse=",")), do.call(c, allocate(names[!(names %in% x)], 2)))
+})
+
+test.sort <- do.call(rbind, test)
+test.sort
+test.sort[] <- apply(test.sort, 1, sort)
+test.sort
+
+apply(do.call(rbind, test), 2, sort)
 
 
 
