@@ -74,19 +74,59 @@ allocate.rec <- function(data, n) {
   }
 }
 
-names <- c("a", "b", "c", "d", "e", "f")
-first <- combn(names, 2, simplify = FALSE)
-
-test <- lapply(first, function(x) {
-  c(sort(paste(x, collapse=",")), do.call(c, allocate(names[!(names %in% x)], 2)))
+lapply(combn(names, 2, simplify = FALSE), function(x) {
+  cbind(paste(x, collapse = ","), paste(names[!(names %in% x)], collapse = ","))
 })
 
-test.sort <- do.call(rbind, test)
-test.sort
-test.sort[] <- apply(test.sort, 1, sort)
-test.sort
 
-apply(do.call(rbind, test), 2, sort)
+allocate <- function(data) {
+  if(length(data) == 4) {
+    lst <- lapply(combn(data, 2, simplify = FALSE), function(x) {
+      cbind(paste(x, collapse = ","), paste(data[!(data %in% x)], collapse = ","))
+    })
+    as.data.frame(do.call(rbind, lst[1:as.integer(length(lst)/2)]))
+  }
+  else {
+    lapply(combn(data, 2, simplify = FALSE), function(x) {
+      data.frame(V0 = paste(x, collapse = ","), allocate(data[!(data %in% x)]))
+    })
+  }
+}
+
+tmp <- allocate(letters[1:6])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
