@@ -1,104 +1,191 @@
 ### S3 Class
-## set up classes and methods
-die <- list(trials = character(0))
+## setting up independent classes and methods
+# setting up line by line
+die <- list(event = character(0))
 class(die) <- "Die"
 
-coin <- list(trials = character(0))
+coin <- list(event = character(0))
 class(coin) <- "Coin"
 
-reset <- function(obj) {
-  UseMethod("reset", obj)
-  print("Reset the trials")
+# setting up by constructors
+get_die <- function(event) {
+  out <- list()
+  out$event <- event
+  class(out) <- "Die"
+  out
 }
 
-reset.default <- function(obj) {
-  print("Uh oh, not sure what to do here!\n")
-  obj
+get_coin <- function(event) {
+  out <- list()
+  out$event <- event
+  class(out) <- "Coin"
+  out
+}
+
+# reset_events
+reset_events <- function(obj) {
+  UseMethod("reset_events", obj)
+  cat("Reset the events")
+}
+
+reset_events.default <- function(obj) {
+  cat("Not sure what to do here! ")
+  cat(paste(obj, collapse = ","))
 }
 
 reset.Die <- function(obj) {
-  obj$trials <- character(0)
-  print("Reset the die\n")
+  obj$trial <- character(0)
+  cat("Reset the die")
   obj
 }
 
 reset.Coin <- function(obj) {
-  obj$trials <- character(0)
-  print("Reset the coin\n")
+  obj$trial <- character(0)
+  cat("Reset the coin")
   obj
 }
 
-## test reset methods
-die$trials <- c("3", "4", "1")
+# using S3 generic function
+print.Die <- function(obj) {
+  if (length(obj$trial) == 0) {
+    cat("No trial is made.")
+  } else {
+    cat(paste(length(obj$trial), "trials are made: "))
+    cat(paste(obj$trial, collapse = ","))
+  }
+}
+
+print.Coin <- function(obj) {
+  if (length(obj$trial) == 0) {
+    cat("No trial is made.")
+  } else {
+    cat(paste(length(obj$trial), "trials are made: "))
+    cat(paste(obj$trial, collapse = ","))
+  }
+}
+
+# test reset methods
+die_trials <- c("3", "4", "1")
+coin_trials <- c("H", "H", "T")
+
+die$trial <- die_trials
 die
 
-die <- reset(die) #reset.Die()
-die
+all.equal(die, get_die(die_trials))
 
-coin$trials <- c("H", "H", "T")
+die <- reset(die)
+
+coin$trial <- coin_trials
+coin <- reset(coin)
 coin
 
-coin <- reset(coin) #reset.Coin()
-coin
-
-reset(1:3) #reset.default()
+reset(1:3)
 
 ## defining objects and inheritance
-geo_trial <- function() {
-  me <- list(history = character(0))
-  class(me) <- append(class(me), "geo_trial")
-  me
+# constructors
+get_base <- function() {
+  out <- list(trial = character(0))
+  class(out) <- append(class(out), "Base")
+  out
 }
 
-die_trial <- function() {
-  me <- geo_trial()
-  class(me) <- append(class(me), "die_trial")
-  me
+get_die <- function() {
+  out <- get_base()
+  class(out) <- append(class(out), "Die")
+  out
 }
 
-coin_trial <- function() {
-  me <- geo_trial()
-  class(me) <- append(class(me), "coin_trial")
-  me
+get_coin <- function() {
+  out <- get_base()
+  class(out) <- append(class(out), "Coin")
 }
 
-sim <- function(obj) {
-  UseMethod("sim", obj)
+# simulate_events method
+simulate_events <- function(obj) {
+  UseMethod("simulate_events", obj)
 }
 
-sim.default <- function(obj) {
+simulate_events.default <- function(obj) {
   warning("Default simulation method called on unrecognized object.")
   obj
 }
 
-sim.geo_trial <- function(obj) {
-  obj <- reset(obj)
+simulate_events.Base <- function(obj) {
+  obj <- reset_trials(obj)
   repeat {
-    this_trial <- single_trial(obj)
-    obj <- append_event(obj, this_trial$result)
-    if(this_trial$success) break
+    this_trial <- simulate_new(obj)
+    obj <- append_event(obj, this_trial$trial)
+    if (this_trial$success) break    
   }
   obj
 }
 
-single_trial.default <- function(obj) {
-  warning("Unrecognized object found for single_trial().")
-  list(result = "1", success = TRUE)
+# simulate_new method
+simulate_new <- function(obj) {
+  UseMethod("simulate_new", obj)
 }
 
-single_trial.geo_trial <- function(obj) {
-  NextMethod("single_trial", obj)
+simulate_new.default <- function(obj) {
+  cat("Unrecognized object found for simulate_new().")
 }
 
-single_trial.coin_trial <- function(obj) {
-  value <- as.character(cut(as.integer(1 + trunc(runif(1, 0, 2))), c(0, 1, 2), lebels = c("M", "T")))
-  list(result = value, success = (value == 1))
+simulate_new.Base <- function(obj) {
+  NextMethod("simulate_new", obj)
 }
 
-single_trial.die_trial <- function(obj) {
-  value <- as.integer(1 + trunc(runif(1, 0, 6)))
-  list(result = value, success = (value == 1))
+simulate_new.Die <- function(obj) {
+  trial <- as.integer(trunc(1 + runif(1, 0, 6)))
+  list(trial = trial, success = (trial == 1))
 }
 
-coin <- coin_trial()
-coin <- sim(coin)
+simulate_new.Coin <- function(obj) {
+  trial <- c("H", "T")[as.integer(trunc(1 + runif(1, 0, 2)))]
+  list(trial = trial, success = (trial == "H"))
+}
+
+# append_event method
+append_event <- function(obj, new_trial = NULL) {
+  UseMethod("append_event", obj)
+}
+
+append_event.default <- function(obj, new_trial = NULL) {
+  cat("Unsupported object entered")
+}
+
+append_event.Base <- function(obj, new_trial = NULL) {
+  obj$trial <- c(obj$trial, new_trial)
+  obj
+}
+
+# show_trials method
+show_trials <- function(obj) {
+  UseMethod("show_trials", obj)
+}
+
+show_trials.default <- function(obj) {
+  cat("Unsupported object entered")
+}
+
+show_trials.Base <- function(obj) {
+  obj$trials
+}
+
+# reset method
+reset_trials <- function(obj) {
+  UseMethod("reset_trials", obj)
+}
+
+reset_trials.default <- function(obj) {
+  cat("An unsupported object entered")
+}
+
+reset_trials.Base <- function(obj) {
+  obj$trial <- character(0)
+  obj
+}
+
+
+
+
+
+
