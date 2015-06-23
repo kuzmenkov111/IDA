@@ -186,8 +186,8 @@ reset_trials.Base <- function(obj) {
   obj
 }
 
-
-
-
-
+existing_paths <- .libPaths()
+sparkr_path <- "C:/"
+.libPaths(c(existing_paths, sparkr_path))
+.libPaths()
 
