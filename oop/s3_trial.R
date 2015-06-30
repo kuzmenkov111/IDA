@@ -29,18 +29,18 @@ reset_events <- function(obj) {
 }
 
 reset_events.default <- function(obj) {
-  cat(paste("Not sure what to do with class", class(obj)))
+  cat(paste("Not sure what to do with the object", class(obj)))
 }
 
 reset_events.Die <- function(obj) {
   obj$trial <- character(0)
-  cat("Reset the die")
+  cat("Reset the events of die")
   obj
 }
 
-  reset_events.Coin <- function(obj) {
+reset_events.Coin <- function(obj) {
   obj$trial <- character(0)
-  cat("Reset the coin")
+  cat("Reset the events of coin")
   obj
 }
 
